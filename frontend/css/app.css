@@ -1,0 +1,55 @@
+/* Thanh cuộn siêu mảnh */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(34, 211, 238, 0.3);
+  border-radius: 20px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 211, 238, 0.4);
+}
+
+/* Hiệu ứng Dropdown mượt */
+.dropdown:hover .dropdown-menu {
+  display: block;
+  animation: slideUp 0.2s ease-out;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slow {
+  animation: spin 3s linear infinite;
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Glow cho các nút quan trọng */
+.glow-btn {
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.2);
+  transition: all 0.3s ease;
+}
+.glow-btn:hover {
+  box-shadow: 0 0 35px rgba(34, 211, 238, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Bảng cấu hình nổi bật */
+.sidebar-contrast {
+  background: linear-gradient(145deg, #0f172a 0%, #020617 100%);
+  border-right: 1px solid rgba(34, 211, 238, 0.2);
+  box-shadow: 20px 0 50px rgba(0, 0, 0, 0.5);
+}

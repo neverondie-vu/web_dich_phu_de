@@ -1,0 +1,498 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  --navy: #0b1437;
+  --card-border: rgba(255, 255, 255, 0.1);
+  --input-bg: rgba(255, 255, 255, 0.06);
+  --input-border: rgba(255, 255, 255, 0.13);
+  --text-muted: #8a9bbf;
+  --text-label: #c4cde0;
+  --cyan: #00cfff;
+  --blue: #3b82f6;
+  --grad-btn: linear-gradient(90deg, #38bdf8 0%, #3b5fe2 100%);
+  --font: "Be Vietnam Pro", sans-serif;
+}
+html,
+body {
+  height: 100%;
+  font-family: var(--font);
+  background: var(--navy);
+  color: #fff;
+  overflow: hidden;
+}
+.page {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+/* ── LEFT – form đăng ký ── */
+.left {
+  flex: 0 0 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(135deg, #060d2a 0%, #0b1437 100%);
+}
+
+.card {
+  width: 100%;
+  max-width: 460px;
+  background: rgba(10, 18, 50, 0.92);
+  backdrop-filter: blur(28px);
+  border: 1.5px solid rgba(56, 200, 255, 0.45);
+  border-radius: 24px;
+  padding: 40px 40px 36px;
+  box-shadow:
+    0 0 0 1px rgba(56, 200, 255, 0.12),
+    0 0 30px rgba(56, 200, 255, 0.12),
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.brand {
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(90deg, #38e8ff 0%, #6c8fff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+.card h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #eef2ff;
+  margin-bottom: 5px;
+}
+.card .sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.field {
+  text-align: left;
+  margin-bottom: 14px;
+}
+.field label {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--text-label);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-wrap svg.left-ico {
+  position: absolute;
+  left: 14px;
+  color: var(--text-muted);
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+.input-wrap input {
+  width: 100%;
+  padding: 12px 42px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  color: #e2e8f8;
+  font-size: 0.83rem;
+  font-family: var(--font);
+  transition:
+    border-color 0.25s,
+    background 0.25s;
+  outline: none;
+}
+.input-wrap input::placeholder {
+  color: #4a5878;
+}
+.input-wrap input:focus {
+  border-color: rgba(56, 189, 248, 0.5);
+  background: rgba(255, 255, 255, 0.09);
+}
+.eye-btn {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+.eye-btn:hover {
+  color: #cbd5e1;
+}
+
+/* password strength */
+.strength-bar {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+.strength-bar span {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background 0.3s;
+}
+.strength-bar span.weak {
+  background: #ef4444;
+}
+.strength-bar span.medium {
+  background: #f59e0b;
+}
+.strength-bar span.strong {
+  background: #22c55e;
+}
+
+.btn-register {
+  width: 100%;
+  padding: 13px;
+  background: var(--grad-btn);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 6px;
+  letter-spacing: 0.3px;
+  box-shadow: 0 6px 22px rgba(56, 130, 246, 0.35);
+  transition:
+    filter 0.2s,
+    transform 0.15s;
+}
+.btn-register:hover {
+  filter: brightness(1.08);
+}
+.btn-register:active {
+  transform: scale(0.98);
+}
+
+.or-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 14px;
+}
+.or-row hr {
+  flex: 1;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.or-row span {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.socials {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+.soc-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+.soc-btn:hover {
+  background: rgba(255, 255, 255, 0.11);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.soc-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.footer {
+  margin-top: 18px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.footer a {
+  color: #38e8ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* ── RIGHT – ảnh chàng trai ── */
+.right {
+  flex: 0 0 60%;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #060d2a 0%, #0e1a42 60%, #12204e 100%);
+}
+.right::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 60% 40% at 60% 55%,
+      rgba(0, 100, 255, 0.15) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 35% 35% at 30% 20%,
+      rgba(0, 50, 200, 0.12) 0%,
+      transparent 70%
+    );
+  z-index: 1;
+}
+
+/* waveform */
+.waveform {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* boy image */
+.boy-img {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: 40% center;
+  mask-image:
+    linear-gradient(
+      to top,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    ),
+    linear-gradient(to left, transparent 0%, black 15%, black 100%);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(
+      to top,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    ),
+    linear-gradient(to left, transparent 0%, black 15%, black 100%);
+  -webkit-mask-composite: destination-in;
+  filter: drop-shadow(0 0 30px rgba(0, 100, 255, 0.3));
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* floating tag */
+.tag {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 14px;
+  padding: 10px 18px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #d1daf5;
+  white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 3;
+}
+.tag-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tag-icon.teal {
+  background: rgba(0, 200, 255, 0.18);
+  color: var(--cyan);
+}
+.dot-bar {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+.dot-bar span {
+  display: block;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--cyan);
+  animation: bar 0.9s ease-in-out infinite alternate;
+}
+.dot-bar span:nth-child(1) {
+  height: 8px;
+  animation-delay: 0s;
+}
+.dot-bar span:nth-child(2) {
+  height: 14px;
+  animation-delay: 0.15s;
+}
+.dot-bar span:nth-child(3) {
+  height: 10px;
+  animation-delay: 0.3s;
+}
+.dot-bar span:nth-child(4) {
+  height: 16px;
+  animation-delay: 0.1s;
+}
+.dot-bar span:nth-child(5) {
+  height: 6px;
+  animation-delay: 0.25s;
+}
+@keyframes bar {
+  to {
+    height: 5px;
+  }
+}
+.tag-create {
+  top: 10%;
+  right: 8%;
+  z-index: 3;
+}
+
+/* testimonial */
+.testimonial {
+  position: absolute;
+  bottom: 9%;
+  right: 5%;
+  width: 260px;
+  background: rgba(10, 20, 55, 0.65);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: 16px 18px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  z-index: 3;
+}
+.quote-mark {
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--cyan);
+  font-family: Georgia, serif;
+  margin-bottom: 4px;
+  display: block;
+}
+.testimonial p {
+  font-size: 0.75rem;
+  color: #b0bde0;
+  line-height: 1.6;
+}
+.trust-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+.avatars {
+  display: flex;
+}
+.avatars img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #0d1b3e;
+  margin-left: -6px;
+  object-fit: cover;
+}
+.avatars img:first-child {
+  margin-left: 0;
+}
+.trust-text {
+  font-size: 0.67rem;
+  color: #8a9bbf;
+}
+.success-msg {
+  display: none; /* Ẩn mặc định */
+  background: rgba(34, 197, 94, 0.07);
+  border: 1px solid rgba(34, 197, 94, 0.22);
+  border-radius: 16px;
+  padding: 28px 20px;
+  text-align: center;
+  animation: fadeScale 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fadeScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.check-ring {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1.5px solid rgba(34, 197, 94, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+}
+
+.check-ring svg {
+  width: 26px;
+  height: 26px;
+  stroke: #22c55e;
+}
+
+.success-msg p {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4ade80;
+  margin-bottom: 4px;
+}
+
+.success-msg span {
+  display: block;
+  font-size: 12.5px;
+  color: rgba(134, 239, 172, 0.6);
+  line-height: 1.5;
+}

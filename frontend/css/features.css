@@ -1,0 +1,398 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #080c14;
+  --bg2: #0d1320;
+  --bg3: #111827;
+  --surface: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.08);
+  --border2: rgba(255, 255, 255, 0.14);
+  --text: #f0f4ff;
+  --muted: #7a8aaa;
+  --accent: #4f8ef7;
+  --accent2: #7c3aed;
+  --cyan: #06b6d4;
+  --glow: rgba(79, 142, 247, 0.15);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── NOISE & GRID BG ── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(79, 142, 247, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79, 142, 247, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 18px 0;
+  background: rgba(8, 12, 20, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+nav .inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #4f8ef7, #06b6d4);
+  -webkit-background-clip: text;
+  background-clip: text; /* Đã thêm dòng này để fix lỗi */
+  -webkit-text-fill-color: transparent;
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 36px;
+  align-items: center;
+}
+nav a {
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 400;
+  transition: all 0.3s ease;
+}
+nav a:hover {
+  color: var(--text);
+}
+
+/* Active Link */
+nav a.active {
+  color: var(--text);
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+/* Dropdown Liên Hệ */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  padding: 10px 0;
+}
+.dropdown-content {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 120%;
+  left: 50%;
+  transform: translate(-50%, 10px);
+  background: rgba(13, 19, 32, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  min-width: 160px;
+  padding: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  z-index: 200;
+}
+.dropdown:hover .dropdown-content {
+  visibility: visible;
+  opacity: 1;
+  transform: translate(-50%, 0);
+  top: 100%;
+}
+.dropdown-content a {
+  color: var(--muted);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 10px;
+}
+.dropdown-content a svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+.dropdown-content a:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+}
+.dropdown-content a:hover svg {
+  transform: scale(1.15);
+}
+.dropdown-content a.gmail:hover {
+  color: #ea4335;
+}
+.dropdown-content a.facebook:hover {
+  color: #1877f2;
+}
+.dropdown-content a.zalo:hover {
+  color: #0068ff;
+}
+
+/* ── HERO ── */
+.hero {
+  padding: 180px 0 100px;
+  text-align: center;
+  position: relative;
+}
+.hero-glow {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 400px;
+  background: radial-gradient(
+    ellipse,
+    rgba(6, 182, 212, 0.15) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  border-radius: 40px;
+  padding: 7px 18px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--cyan);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  animation: fadeUp 0.8s ease both;
+}
+h1 {
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(40px, 6vw, 64px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  margin-bottom: 28px;
+  animation: fadeUp 0.8s 0.1s ease both;
+}
+.gradient-text {
+  background: linear-gradient(135deg, #06b6d4 0%, #4f8ef7 50%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  background-clip: text; /* Đã thêm dòng này để fix lỗi */
+  -webkit-text-fill-color: transparent;
+}
+.hero p {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 600px;
+  margin: 0 auto 48px;
+  font-weight: 300;
+  line-height: 1.8;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+
+/* ── FEATURE ZIG-ZAG ROWS ── */
+.features-wrapper {
+  padding: 60px 0 120px;
+}
+
+.feature-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  margin-bottom: 140px;
+}
+.feature-row:last-child {
+  margin-bottom: 0;
+}
+
+/* Lật ngược vị trí Text và Ảnh */
+.feature-row.reverse .text-col {
+  order: 2;
+}
+.feature-row.reverse .img-col {
+  order: 1;
+}
+
+@media (max-width: 850px) {
+  .feature-row {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-bottom: 80px;
+    text-align: center;
+  }
+  .feature-row.reverse .text-col {
+    order: 1;
+  }
+  .feature-row.reverse .img-col {
+    order: 2;
+  }
+  .feature-list {
+    justify-content: center;
+  }
+}
+
+.text-col h2 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+.text-col p {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 30px;
+}
+
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #f0f4ff;
+}
+.feature-item-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(79, 142, 247, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 12px;
+}
+
+/* Image Mockup Style */
+.img-col {
+  position: relative;
+}
+.img-wrapper {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  background: var(--bg2);
+}
+.img-wrapper img {
+  width: 100%;
+  display: block;
+  opacity: 0.85;
+  transition: all 0.5s;
+}
+.img-wrapper:hover img {
+  opacity: 1;
+  transform: scale(1.03);
+}
+
+/* Decor Glow sau ảnh */
+.img-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background: var(--accent);
+  filter: blur(80px);
+  opacity: 0.2;
+  z-index: -1;
+}
+.feature-row:nth-child(2) .img-glow {
+  background: var(--cyan);
+}
+.feature-row:nth-child(3) .img-glow {
+  background: var(--accent2);
+}
+
+/* ── DIVIDER ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border2), transparent);
+  margin: 0 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

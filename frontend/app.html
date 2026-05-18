@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AutoSub Editor Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+
+  <body
+    class="bg-[#020617] text-slate-200 min-h-screen overflow-hidden selection:bg-cyan-500/30"
+  >
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+      <div
+        class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-cyan-500/5 blur-[120px] rounded-full"
+      ></div>
+      <div
+        class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/5 blur-[120px] rounded-full"
+      ></div>
+    </div>
+
+   <header class="flex items-center justify-between px-8 py-3 border-b border-white/5 backdrop-blur-xl bg-black/20 relative z-[100]">
+  <div class="flex items-center gap-3 cursor-pointer group" onclick="window.location.href = 'index.html'">
+    <div class="w-9 h-9 bg-gradient-to-br from-blue-600 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+      <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+      </svg>
+    </div>
+    <span class="text-lg font-black tracking-tighter uppercase italic">Auto<span class="text-cyan-400">Sub</span><span class="font-light text-slate-500 not-italic">Editor</span></span>
+  </div>
+
+  <div id="auth-group" class="flex items-center h-full">
+    </div>
+</header>
+
+    <main class="flex h-[calc(100vh-61px)]">
+      <aside
+        class="sidebar-contrast w-[450px] pl-[3cm] pr-8 py-10 flex flex-col gap-8 overflow-y-auto custom-scrollbar relative z-20"
+      >
+        <div id="app-tool" class="space-y-6">
+          <div class="flex items-center gap-2 mb-2">
+            <div class="w-1 h-6 bg-cyan-500 rounded-full"></div>
+            <h2
+              class="text-xs font-bold text-white uppercase tracking-[0.25em]"
+            >
+              Cấu hình video
+            </h2>
+          </div>
+
+          <form id="uploadForm" class="space-y-6">
+            <div class="space-y-2">
+              <label class="text-[10px] font-bold text-slate-400 uppercase ml-1"
+                >Tải video (.mp4)</label
+              >
+
+              <div class="relative group border-2 border-dashed border-cyan-500/20 hover:border-cyan-500/50 bg-black/60 rounded-[20px] transition-all cursor-pointer text-center h-[160px] flex items-center justify-center overflow-hidden">
+  <input
+    type="file"
+    id="videoFile"
+    accept="video/mp4"
+    required
+    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50"
+  />
+
+  <div id="uploadDefaultUI" class="relative z-10 pointer-events-none transition-transform group-hover:scale-105">
+    <svg class="w-8 h-8 text-cyan-500/50 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+    </svg>
+    <p id="fileNameDisplay" class="text-[11px] text-slate-400 font-medium truncate max-w-[200px]">
+      Click để chọn hoặc kéo thả
+    </p>
+  </div>
+
+  <div id="uploadThumbnailUI" class="absolute inset-0 z-10 hidden pointer-events-none">
+    <img id="videoThumbnail" class="w-full h-full object-cover opacity-60" />
+    <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/30 backdrop-blur-[1px] group-hover:bg-black/50 transition">
+      <p id="fileNameOverlay" class="text-[10px] font-bold text-white bg-black/60 px-4 py-1.5 rounded-full truncate max-w-[80%] shadow-lg border border-white/20">
+        </p>
+      <p class="text-[9px] text-cyan-400 font-bold uppercase mt-2 opacity-0 group-hover:opacity-100 transition">Nhấn để đổi video khác</p>
+    </div>
+  </div>
+</div>
+
+            <div class="grid grid-cols-1 gap-5">
+              <div class="space-y-2">
+                <label
+                  class="text-[10px] font-bold text-slate-400 uppercase ml-1"
+                  >Ngôn ngữ nguồn</label
+                >
+                <select
+                  id="srcLanguage"
+                  class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-cyan-100 outline-none focus:border-cyan-500 shadow-inner transition"
+                >
+                  <option value="en">Tiếng Anh</option>
+                  <option value="zh">Tiếng Trung</option>
+                  <option value="ko">Tiếng Hàn</option>
+                  <option value="ja">Tiếng Nhật</option>
+                  <option value="vi">Tiếng Việt</option>
+                </select>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                  <label
+                    class="text-[10px] font-bold text-slate-400 uppercase ml-1"
+                    >Vị trí phụ đề (Y)</label
+                  >
+                  <input
+                    type="number"
+                    id="posY"
+                    value="20"
+                    class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-cyan-100 outline-none focus:border-cyan-500 transition"
+                  />
+                </div>
+                <div class="space-y-2">
+                  <label
+                    class="text-[10px] font-bold text-slate-400 uppercase ml-1"
+                    >Độ mờ nền</label
+                  >
+                  <input
+                    type="number"
+                    id="opacity"
+                    value="0.8"
+                    step="0.1"
+                    max="1"
+                    min="0"
+                    class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-cyan-100 outline-none focus:border-cyan-500 transition"
+                  />
+                </div>
+              </div>
+            </div>
+            <br>
+
+            <button
+              type="submit"
+              id="submitBtn"
+              class="glow-btn w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-black py-4 rounded-2xl text-[12px] uppercase tracking-widest transition-all"
+            >
+              ✦ Bắt đầu phân tích AI
+            </button>
+          </form>
+        </div>
+
+        <div class="flex-1 flex flex-col min-h-0 border-t border-white/5 pt-8">
+          <label
+            class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] block mb-4"
+            >Hàng đợi xử lý</label
+          >
+          <div
+            id="videoQueue"
+            class="space-y-3 overflow-y-auto flex-1 custom-scrollbar pr-2"
+          >
+            <div
+              class="p-5 rounded-2xl border border-dashed border-white/5 bg-black/20 text-center"
+            >
+              <p class="text-[10px] text-slate-600 italic">
+                Hệ thống đang trống
+              </p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section
+        class="flex-1 p-10 flex flex-col gap-8 bg-slate-950/30 overflow-hidden"
+      >
+        <div class="flex items-end justify-between border-b border-white/5 pb-6">
+  <div>
+    <h1 class="text-2xl font-bold text-white tracking-tight">
+      Trình biên tập <span class="text-cyan-400 font-black">AI</span>
+    </h1>
+    <div class="flex items-center gap-2 mt-2">
+      <div class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_10px_#22d3ee]"></div>
+      <p id="statusText" class="text-xs text-slate-400 font-medium">
+        Hệ thống sẵn sàng
+      </p>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-4 mr-[190px]">
+  
+  <!-- Button Kho Lưu Trữ -->
+  <button 
+    onclick="openArchiveModal()" 
+    class="group relative overflow-hidden flex items-center gap-3 px-6 py-3 rounded-2xl
+    bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600
+    border border-white/10
+    backdrop-blur-xl
+    transition-all duration-500
+    hover:scale-105
+    hover:-translate-y-1
+    hover:shadow-[0_0_35px_rgba(59,130,246,0.65)]
+    active:scale-95"
+  >
+
+    <!-- Glow Background -->
+    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500">
+      <div class="absolute inset-0 bg-white/10"></div>
+      <div class="absolute -inset-[100%] animate-[spin_6s_linear_infinite] bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative flex items-center justify-center w-11 h-11 rounded-xl
+      bg-white/15 border border-white/20
+      shadow-inner shadow-white/10">
+      
+      <span class="text-2xl drop-shadow-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110">
+        📦
+      </span>
+
+      <!-- Ping -->
+      <span class="absolute -top-1 -right-1 flex h-3 w-3">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-200 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+      </span>
+    </div>
+
+    <!-- Text -->
+    <div class="relative flex flex-col items-start">
+      <span class="text-white text-[13px] font-black uppercase tracking-[0.2em]">
+        Kho lưu trữ
+      </span>
+
+      <span class="text-cyan-100 text-[10px] font-medium tracking-wide opacity-80">
+        Archive Storage
+      </span>
+    </div>
+
+    <!-- Shine -->
+    <div class="absolute inset-0 rounded-2xl overflow-hidden">
+      <div class="absolute top-0 left-[-120%] w-[60%] h-full bg-gradient-to-r from-transparent via-white/25 to-transparent
+      skew-x-[-25deg] group-hover:left-[140%] transition-all duration-1000"></div>
+    </div>
+
+  </button>
+
+  <!-- Các nút khác -->
+  <button id="exportSrtBtn" class="hidden ...">...</button>
+  <button id="burnVideoBtn" class="hidden ...">...</button>
+
+</div>
+
+    <button id="exportSrtBtn" class="hidden ...">Xuất SRT</button>
+    <button id="burnVideoBtn" class="hidden ...">Ép & Tải Video</button>
+  </div>
+</div>
+
+        <div class="flex flex-col lg:flex-row gap-10 flex-1 overflow-hidden">
+          <div class="flex-1 space-y-6 min-w-0">
+            <div
+              class="aspect-video bg-black rounded-[40px] overflow-hidden border border-cyan-500/10 shadow-[0_30px_100px_rgba(0,0,0,0.8)] relative group"
+            >
+              <video
+                id="previewVideo"
+                controls
+                class="w-full h-full object-contain relative z-10"
+              ></video>
+              <div
+                id="loadingOverlay"
+                class="hidden absolute inset-0 z-20 bg-slate-950/90 flex items-center justify-center backdrop-blur-md"
+              >
+                <div class="flex flex-col items-center gap-4">
+                  <span
+                    class="animate-spin h-10 w-10 border-4 border-cyan-400 border-t-transparent rounded-full"
+                  ></span>
+                  <span
+                    class="text-xs font-bold text-cyan-400 uppercase tracking-widest"
+                    >Đang render video...</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div
+              class="p-5 bg-cyan-500/[0.03] border border-cyan-500/10 rounded-[24px] flex gap-4 items-center"
+            >
+              <div
+                class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center flex-shrink-0"
+              >
+                <svg
+                  class="w-5 h-5 text-cyan-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed italic">
+                Chỉnh sửa văn bản ở bảng bên phải. AI sẽ tự động đồng bộ hóa
+                thời gian chính xác cho từng phân đoạn video của bạn.
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="w-full lg:w-[420px] flex flex-col bg-slate-900/50 border border-white/5 rounded-[32px] overflow-hidden shadow-2xl"
+          >
+            <div
+              class="p-5 border-b border-white/5 flex items-center justify-between bg-black/20"
+            >
+              <span
+                class="text-xs font-bold text-slate-300 uppercase tracking-widest"
+                >Phân đoạn phụ đề</span
+              >
+              <span
+                id="subCount"
+                class="text-[10px] font-mono text-cyan-400 bg-cyan-400/10 px-3 py-1 rounded-full border border-cyan-400/20"
+                >0 segments</span
+              >
+            </div>
+            <div
+              id="subtitleList"
+              class="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar"
+            >
+              <div
+                class="h-full flex flex-col items-center justify-center text-slate-700 gap-4 opacity-40"
+              >
+                <svg
+                  class="w-12 h-12"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  ></path>
+                </svg>
+                <p class="text-xs font-medium uppercase tracking-widest">
+                  Dữ liệu trống
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div id="archiveModal" class="hidden fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center transition-opacity">
+  <div class="bg-[#0f172a] border border-cyan-500/20 w-full max-w-2xl rounded-3xl p-8 shadow-[0_0_50px_rgba(34,211,238,0.1)] relative">
+    <button onclick="closeArchiveModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </button>
+    <h2 class="text-xl font-black text-white uppercase tracking-widest mb-2">Kho Lưu Trữ <span class="text-cyan-400">Dự Án</span></h2>
+    <p class="text-xs text-slate-400 mb-6 italic">* Các dự án sẽ tự động bị xóa sau 20 ngày để giải phóng bộ nhớ.</p>
+    
+    <div id="archiveList" class="space-y-3 max-h-[60vh] overflow-y-auto custom-scrollbar pr-2">
+      </div>
+  </div>
+</div>
+    <script src="app.js"></script>
+  </body>
+</html>

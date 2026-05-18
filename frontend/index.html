@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AutoSub - AI Subtitle Translation</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <script src="app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body
+    class="text-white min-h-screen overflow-x-hidden relative selection:bg-blue-500/30"
+  >
+    <div class="crescent-moon"></div>
+    <div class="meteor-shower">
+      <div class="meteor"></div>
+      <div class="meteor"></div>
+      <div class="meteor"></div>
+    </div>
+
+    <header
+      class="relative z-[9999] flex items-center justify-between px-8 py-6 max-w-7xl mx-auto overflow-visible"
+    >
+      <div
+        class="flex items-center gap-3 cursor-pointer"
+        onclick="window.location.reload()"
+      >
+        <div
+          class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(56,189,248,0.5)]"
+        >
+          <svg
+            class="w-6 h-6 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+            ></path>
+          </svg>
+        </div>
+        <span
+          class="text-2xl font-extrabold tracking-tight"
+          style="font-family: &quot;Montserrat&quot;, sans-serif"
+        >
+          Auto<span class="sparkle-ai">Sub</span>
+        </span>
+      </div>
+
+      <nav
+        class="nav-links hidden md:flex items-center gap-8 bg-white/5 border border-white/10 px-8 py-3 rounded-full backdrop-blur-md"
+      >
+        <a
+          href="index.html"
+          class="text-sm font-medium text-gray-300 hover:text-white transition"
+          >Home</a
+        >
+        <a
+          href="about.html"
+          class="text-sm font-medium text-gray-300 hover:text-white transition"
+          >About</a
+        >
+        <a
+          href="features.html"
+          class="text-sm font-medium text-gray-300 hover:text-white transition"
+          >Features</a
+        >
+        <a
+          href="pricing.html"
+          class="text-sm font-medium text-gray-300 hover:text-white transition"
+          >Pricing</a
+        >
+      </nav>
+
+      <div
+        class="relative flex items-center bg-black/40 border border-white/20 rounded-full p-1 backdrop-blur-sm w-[210px] h-[44px] overflow-visible z-[9999]"
+      >
+        <div id="auth-group" class="relative flex items-center w-full h-full">
+          <div
+            id="auth-slider"
+            class="absolute h-[34px] w-[110px] bg-white rounded-full transition-all duration-300 ease-out left-[90px]"
+          ></div>
+          <a
+            href="auth/login.html"
+            class="relative z-10 w-[90px] text-sm font-semibold text-gray-400 flex items-center justify-center"
+            >Sign in</a
+          >
+          <button
+            onclick="window.location.href = 'register.html'"
+            class="relative z-10 w-[110px] text-sm font-bold text-black"
+          >
+            Get Started
+          </button>
+        </div>
+
+        <style>
+          .dropdown:hover .dropdown-menu {
+            display: block;
+          }
+        </style>
+      </div>
+    </header>
+
+    <main
+      class="relative z-10 flex flex-col items-center mt-32 px-4 text-center"
+    >
+      <div
+        id="hero-section"
+        class="flex flex-col items-center w-full fade-in pb-20"
+      >
+        <h1
+          class="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight max-w-4xl mb-6 relative z-10"
+        >
+          <span class="sparkle-ai">AI</span> Subtitle Translation<br />
+          For Global <span class="sparkle-text">Video Content</span>
+        </h1>
+        <p class="text-gray-400 max-w-2xl text-lg mb-10 relative z-10">
+          Tự động tạo và dịch phụ đề video bằng công nghệ AI tiên tiến nhất, hỗ
+          trợ hơn 100 ngôn ngữ với timecode đồng bộ chính xác.
+        </p>
+
+        <button
+          onclick="window.location.href = 'app.html'"
+          class="get-started-btn btn-hightech z-20 px-10 py-4 rounded-full font-bold text-sm relative"
+        >
+          <span class="flex items-center gap-2">
+            <svg
+              class="w-5 h-5 text-cyan-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+              ></path>
+            </svg>
+            GET STARTED
+          </span>
+        </button>
+
+        <div class="spacecraft-container">
+          <div class="spacecraft large-ship-left">
+            <div class="module main-hull"></div>
+            <div class="module habitat-section"></div>
+            <div class="module engine-pod-left thruster-glow"></div>
+            <div class="module engine-pod-right thruster-glow"></div>
+            <div class="panel plating plating-1"></div>
+            <div class="panel plating plating-2"></div>
+            <div class="panel window window-1"></div>
+            <div class="panel window window-2"></div>
+            <div class="panel grid-mesh grid-left"></div>
+            <div class="panel grid-mesh grid-right"></div>
+          </div>
+          <div class="spacecraft small-ship-right">
+            <div class="hull main-body"></div>
+            <div class="wing wing-top"></div>
+            <div class="wing wing-bottom"></div>
+            <div class="wing tail-fin"></div>
+            <div class="wing wing-detail-top"></div>
+            <div class="wing wing-detail-bottom"></div>
+            <div class="cockpit glass"></div>
+            <div class="engine-port thruster-glow-blue"></div>
+            <div class="wing detail plating-1"></div>
+            <div class="wing detail plating-2"></div>
+          </div>
+        </div>
+
+        <div class="solar-system pointer-events-none z-0">
+          <div class="sun"></div>
+          <div class="orbit orbit-mercury">
+            <div class="planet-wrap"><div class="planet mercury"></div></div>
+          </div>
+          <div class="orbit orbit-mars">
+            <div class="planet-wrap"><div class="planet mars"></div></div>
+          </div>
+          <div class="orbit orbit-jupiter">
+            <div class="planet-wrap"><div class="planet jupiter"></div></div>
+          </div>
+          <div class="orbit orbit-saturn">
+            <div class="planet-wrap saturn-wrap">
+              <div class="planet saturn"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

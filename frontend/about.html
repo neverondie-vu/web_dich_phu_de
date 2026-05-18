@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Về Dự Án AutoSub</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/about.css" />
+  </head>
+  <body>
+    <nav>
+      <div class="inner">
+        <a href="index.html" style="text-decoration: none">
+          <div class="logo">AutoSub</div>
+        </a>
+        <ul>
+          <li><a href="index.html">Trang Chủ</a></li>
+          <li><a href="#mission" class="nav-link active">Giới Thiệu</a></li>
+          <li><a href="#tech" class="nav-link">Tính Năng</a></li>
+          <li><a href="#workflow" class="nav-link">Quy Trình</a></li>
+
+          <li class="dropdown">
+            <a
+              href="javascript:void(0)"
+              style="display: flex; align-items: center; gap: 4px"
+            >
+              Liên Hệ
+              <span style="font-size: 10px; margin-top: 2px">▼</span>
+            </a>
+            <div class="dropdown-content">
+              <a
+                href="mailto:Neverondie@gmail.com"
+                class="gmail"
+                target="_blank"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                  />
+                </svg>
+                Gửi Gmail
+              </a>
+              <a
+                href="https://www.facebook.com/khuya.nang.73/about?locale=vi_VN"
+                class="facebook"
+                target="_blank"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.53 11.16 6.4 12.98 6.4c.86 0 1.76.15 1.76.15V8.5h-1c-.98 0-1.28.61-1.28 1.23V12h2.39l-.38 3h-2.01v6.8C18.56 20.87 22 16.84 22 12z"
+                  />
+                </svg>
+                Facebook
+              </a>
+              <a href="https://zalo.me/0388122528" class="zalo" target="_blank">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"
+                  />
+                </svg>
+                Nhắn Zalo
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-glow"></div>
+      <div class="container">
+        <div class="hero-tag">Báo Cáo Dự Án</div>
+        <h1>
+          Hệ Thống Tự Động Hóa<br />
+          <span class="gradient-text">Phụ Đề Video</span>
+        </h1>
+        <p>
+          Dự án phát triển phần mềm hỗ trợ tạo, dịch thuật và đồng bộ phụ đề đa
+          ngôn ngữ, ứng dụng công nghệ nhận dạng giọng nói (Speech-to-Text).
+        </p>
+        <div class="hero-actions">
+          <a href="#tech" class="btn-primary">
+            <span> Cấu Trúc Hệ Thống</span>
+            <span>↓</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="mission" id="mission">
+      <div class="container">
+        <div class="mission-inner">
+          <div class="mission-content reveal">
+            <span class="section-tag">📌 MỤC TIÊU ĐỀ TÀI</span>
+            <h2 class="section-title">
+              Giải Quyết Bài Toán<br />Đồng Bộ Ngôn Ngữ
+            </h2>
+            <p class="section-subtitle">
+              Dự án tập trung giải quyết khó khăn trong việc thiết lập và căn
+              chỉnh thời gian (timecode) thủ công khi làm phụ đề cho video ngắn.
+            </p>
+            <br />
+            <p class="section-subtitle">
+              Hệ thống AutoSub cung cấp một luồng làm việc (workflow) tự động
+              hóa: từ khâu bóc băng âm thanh, dịch thuật ngữ nghĩa, cho đến việc
+              xuất file (.srt) hoặc xuất video hoàn chỉnh có chứa phụ đề trực
+              tiếp.
+            </p>
+            <br /><br />
+            <div style="display: flex; gap: 16px; flex-wrap: wrap">
+              <div
+                style="
+                  padding: 10px 18px;
+                  background: rgba(79, 142, 247, 0.1);
+                  border: 1px solid rgba(79, 142, 247, 0.2);
+                  border-radius: 8px;
+                  font-size: 13px;
+                  color: #7fb3ff;
+                  font-weight: 500;
+                "
+              >
+                Phân tích ngữ cảnh
+              </div>
+              <div
+                style="
+                  padding: 10px 18px;
+                  background: rgba(6, 182, 212, 0.1);
+                  border: 1px solid rgba(6, 182, 212, 0.2);
+                  border-radius: 8px;
+                  font-size: 13px;
+                  color: #22d3ee;
+                  font-weight: 500;
+                "
+              >
+                Đồng bộ mili-giây
+              </div>
+              <div
+                style="
+                  padding: 10px 18px;
+                  background: rgba(124, 58, 237, 0.1);
+                  border: 1px solid rgba(124, 58, 237, 0.2);
+                  border-radius: 8px;
+                  font-size: 13px;
+                  color: #a78bfa;
+                  font-weight: 500;
+                "
+              >
+                Tối ưu cho Video Ngắn
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="mission-visual reveal"
+            style="position: relative; padding-bottom: 40px"
+          >
+            <div class="mission-card">
+              <div class="mission-card-icon">🎯</div>
+              <h3>Phạm Vi Dự Án</h3>
+              <p>
+                Tập trung tối ưu hóa cho các định dạng video ngắn trên các nền
+                tảng mạng xã hội.
+              </p>
+              <br />
+              <div
+                style="
+                  border-top: 1px solid var(--border);
+                  padding-top: 24px;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 14px;
+                  margin-top: 8px;
+                "
+              >
+                <div style="display: flex; align-items: center; gap: 12px">
+                  <div
+                    style="
+                      width: 36px;
+                      height: 36px;
+                      background: rgba(79, 142, 247, 0.12);
+                      border-radius: 8px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      flex-shrink: 0;
+                    "
+                  >
+                    1
+                  </div>
+                  <div>
+                    <div
+                      style="
+                        font-size: 14px;
+                        font-weight: 600;
+                        margin-bottom: 2px;
+                      "
+                    >
+                      Giao Diện Người Dùng (Frontend)
+                    </div>
+                    <div style="font-size: 13px; color: var(--muted)">
+                      Tương tác tải video & Cấu hình dịch
+                    </div>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px">
+                  <div
+                    style="
+                      width: 36px;
+                      height: 36px;
+                      background: rgba(6, 182, 212, 0.12);
+                      border-radius: 8px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      flex-shrink: 0;
+                    "
+                  >
+                    2
+                  </div>
+                  <div>
+                    <div
+                      style="
+                        font-size: 14px;
+                        font-weight: 600;
+                        margin-bottom: 2px;
+                      "
+                    >
+                      Lõi Nhận Diện (AI Engine)
+                    </div>
+                    <div style="font-size: 13px; color: var(--muted)">
+                      Mô hình nhận dạng giọng nói
+                    </div>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px">
+                  <div
+                    style="
+                      width: 36px;
+                      height: 36px;
+                      background: rgba(16, 185, 129, 0.12);
+                      border-radius: 8px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      flex-shrink: 0;
+                    "
+                  >
+                    3
+                  </div>
+                  <div>
+                    <div
+                      style="
+                        font-size: 14px;
+                        font-weight: 600;
+                        margin-bottom: 2px;
+                      "
+                    >
+                      Xử Lý Đa Phương Tiện (FFmpeg)
+                    </div>
+                    <div style="font-size: 13px; color: var(--muted)">
+                      Hardsub và Render Video
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="tech" id="tech">
+      <div class="container">
+        <div class="tech-header">
+          <div class="reveal">
+            <span class="section-tag">⚙️ LÝ THUYẾT & CÔNG NGHỆ LÕI</span>
+            <h2 class="section-title">Kiến Trúc &<br />Nền Tảng Hệ Thống</h2>
+          </div>
+          <div class="reveal" style="padding-top: 8px">
+            <p class="section-subtitle">
+              Dự án sử dụng kiến trúc phần mềm tích hợp AI, tối ưu hóa quá trình
+              xử lý đa phương tiện thông qua các luồng xử lý đồng thời.
+            </p>
+          </div>
+        </div>
+
+        <div class="tech-grid">
+          <div class="tech-card reveal">
+            <span class="tech-icon">🎙️</span>
+            <h4>Mô Hình AI Speech-to-Text</h4>
+            <p>
+              Ứng dụng mô hình mạng nơ-ron chuyên sâu (Whisper) để trích xuất
+              văn bản từ âm thanh với khả năng lọc nhiễu, nhận dạng chính xác
+              từng khung giờ.
+            </p>
+          </div>
+
+          <div class="tech-card reveal">
+            <span class="tech-icon">⏱️</span>
+            <h4>Đồng Bộ & Xử Lý Timecode</h4>
+            <p>
+              Xây dựng thuật toán ánh xạ (mapping) thời gian thực, đảm bảo đoạn
+              văn bản được hiển thị khớp tuyệt đối với giọng nói gốc.
+            </p>
+          </div>
+
+          <div class="tech-card reveal">
+            <span class="tech-icon">🎞️</span>
+            <h4>Xử Lý Video (FFmpeg)</h4>
+            <p>
+              Thao tác luồng dữ liệu media, nhúng văn bản dưới dạng luồng phụ đề
+              (Subtitle Stream) trực tiếp vào file MP4 để xuất bản.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="workflow" id="workflow">
+      <div class="container">
+        <div class="workflow-header reveal">
+          <span class="section-tag">🔄 KIẾN TRÚC LUỒNG HOẠT ĐỘNG</span>
+          <h2 class="section-title">Quy Trình Xử Lý Hệ Thống</h2>
+          <p class="section-subtitle">
+            Mô tả 4 bước thực thi chính của phần mềm từ lúc tiếp nhận đầu vào
+            đến khi trả kết quả.
+          </p>
+        </div>
+
+        <div class="steps">
+          <div class="step reveal">
+            <div class="step-num">01</div>
+            <h4>Input (Đầu vào)</h4>
+            <p>
+              Hệ thống tiếp nhận tệp tin Video/Audio từ người dùng, thiết lập
+              thông số dịch thuật và vị trí hiển thị (MarginV).
+            </p>
+          </div>
+          <div class="step reveal">
+            <div class="step-num">02</div>
+            <h4>AI Extract</h4>
+            <p>
+              Tiền xử lý âm thanh, sử dụng mô hình học sâu để bóc tách tệp thành
+              các đoạn văn bản thô kèm nhãn thời gian.
+            </p>
+          </div>
+          <div class="step reveal">
+            <div class="step-num">03</div>
+            <h4>Translation Sync</h4>
+            <p>
+              Tiến hành dịch thuật ngôn ngữ đích, đồng thời kiểm tra và khớp lại
+              chuỗi timecode cho chính xác với câu dịch mới.
+            </p>
+          </div>
+          <div class="step reveal">
+            <div class="step-num">04</div>
+            <h4>Output (Đầu ra)</h4>
+            <p>
+              Kết xuất dữ liệu thành tập tin phụ đề (.SRT) tiêu chuẩn hoặc tiến
+              hành hard-sub trực tiếp lên video thành phẩm.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // 1. Hiệu ứng Fade In khi cuộn (Reveal)
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+              setTimeout(() => {
+                entry.target.classList.add("visible");
+              }, 100);
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => observer.observe(el));
+
+      document
+        .querySelectorAll(
+          ".tech-grid .tech-card, .steps .step, .stats-grid .stat-item",
+        )
+        .forEach((el, i) => {
+          el.style.transitionDelay = `${i * 0.1}s`;
+        });
+
+      // 2. CẬP NHẬT: Xử lý Scrollspy (Tự động đổi màu Menu khi cuộn)
+      const sections = document.querySelectorAll("section[id]");
+      const navLinks = document.querySelectorAll(".nav-link");
+
+      window.addEventListener("scroll", () => {
+        let current = "";
+
+        // Tìm section đang nằm trên màn hình
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop;
+          // Trừ đi khoảng trống header (khoảng 150px) để nhận diện sớm hơn
+          if (scrollY >= sectionTop - 150) {
+            current = section.getAttribute("id");
+          }
+        });
+
+        // Thêm/Xóa class active trên thanh menu
+        navLinks.forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === `#${current}`) {
+            link.classList.add("active");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
