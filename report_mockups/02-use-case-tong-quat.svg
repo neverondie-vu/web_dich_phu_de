@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="1050" viewBox="0 0 1700 1050">
+  <defs>
+    <style>
+      .paper{fill:#fff}
+      .frame{fill:none;stroke:#111;stroke-width:2}
+      .actor-line{stroke:#111;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+      .assoc{stroke:#111;stroke-width:1.7;fill:none}
+      .rel{stroke:#111;stroke-width:1.2;fill:none;stroke-dasharray:6 6;marker-end:url(#arrow)}
+      .uc{fill:#fff;stroke:#111;stroke-width:1.8}
+      .text{font-family:"Times New Roman",serif;fill:#111}
+      .title{font-size:20px;font-weight:700}
+      .label{font-size:18px}
+      .small{font-size:13px;font-style:italic}
+      .actor-text{font-size:18px;font-weight:700}
+    </style>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9" fill="none" stroke="#111" stroke-width="1.2"/>
+    </marker>
+  </defs>
+
+  <rect class="paper" width="1700" height="1050"/>
+
+  <!-- System frame -->
+  <rect class="frame" x="265" y="70" width="1170" height="850"/>
+  <text class="text title" x="850" y="105" text-anchor="middle">
+    HỆ THỐNG WEB SAAS TẠO PHỤ ĐỀ TIẾNG VIỆT TỰ ĐỘNG
+  </text>
+
+  <!-- Actors -->
+  <g transform="translate(120 430)">
+    <circle class="actor-line" cx="40" cy="0" r="18"/>
+    <path class="actor-line" d="M40 18 V86 M6 45 H74 M40 86 L12 148 M40 86 L68 148"/>
+    <text class="text actor-text" x="40" y="190" text-anchor="middle">Người dùng</text>
+  </g>
+
+  <g transform="translate(1510 430)">
+    <circle class="actor-line" cx="40" cy="0" r="18"/>
+    <path class="actor-line" d="M40 18 V86 M6 45 H74 M40 86 L12 148 M40 86 L68 148"/>
+    <text class="text actor-text" x="40" y="190" text-anchor="middle">Admin</text>
+  </g>
+
+  <!-- Center login -->
+  <ellipse class="uc" cx="850" cy="470" rx="110" ry="42"/>
+  <text class="text label" x="850" y="476" text-anchor="middle">Đăng nhập</text>
+
+  <!-- User use cases, left side -->
+  <ellipse class="uc" cx="425" cy="205" rx="135" ry="38"/>
+  <text class="text label" x="425" y="211" text-anchor="middle">Đăng ký</text>
+
+  <ellipse class="uc" cx="425" cy="320" rx="135" ry="38"/>
+  <text class="text label" x="425" y="326" text-anchor="middle">Upload video/audio</text>
+
+  <ellipse class="uc" cx="425" cy="435" rx="135" ry="38"/>
+  <text class="text label" x="425" y="441" text-anchor="middle">Tạo phụ đề</text>
+
+  <ellipse class="uc" cx="425" cy="550" rx="135" ry="38"/>
+  <text class="text label" x="425" y="556" text-anchor="middle">Xem / sửa phụ đề</text>
+
+  <ellipse class="uc" cx="425" cy="665" rx="135" ry="38"/>
+  <text class="text label" x="425" y="671" text-anchor="middle">Tải SRT / video</text>
+
+  <ellipse class="uc" cx="425" cy="780" rx="135" ry="38"/>
+  <text class="text label" x="425" y="786" text-anchor="middle">Xem lịch sử</text>
+
+  <!-- Small account-related use cases near top center -->
+  <ellipse class="uc" cx="720" cy="205" rx="120" ry="36"/>
+  <text class="text label" x="720" y="211" text-anchor="middle">Quên mật khẩu</text>
+
+  <ellipse class="uc" cx="980" cy="205" rx="105" ry="36"/>
+  <text class="text label" x="980" y="211" text-anchor="middle">Đăng xuất</text>
+
+  <!-- Main output use case at bottom center -->
+  <ellipse class="uc" cx="850" cy="780" rx="135" ry="38"/>
+  <text class="text label" x="850" y="786" text-anchor="middle">Kho lưu trữ</text>
+
+  <!-- Admin use cases, right side -->
+  <ellipse class="uc" cx="1275" cy="205" rx="135" ry="38"/>
+  <text class="text label" x="1275" y="211" text-anchor="middle">Xem thống kê</text>
+
+  <ellipse class="uc" cx="1275" cy="320" rx="135" ry="38"/>
+  <text class="text label" x="1275" y="326" text-anchor="middle">Quản lý người dùng</text>
+
+  <ellipse class="uc" cx="1275" cy="435" rx="135" ry="38"/>
+  <text class="text label" x="1275" y="441" text-anchor="middle">Quản lý job</text>
+
+  <ellipse class="uc" cx="1275" cy="550" rx="135" ry="38"/>
+  <text class="text label" x="1275" y="556" text-anchor="middle">Xem logs</text>
+
+  <ellipse class="uc" cx="1275" cy="665" rx="135" ry="38"/>
+  <text class="text label" x="1275" y="671" text-anchor="middle">Cấu hình model</text>
+
+  <ellipse class="uc" cx="1275" cy="780" rx="135" ry="38"/>
+  <text class="text label" x="1275" y="786" text-anchor="middle">Bảo trì hệ thống</text>
+
+  <!-- User associations: clean fan lines -->
+  <path class="assoc" d="M195 455 L292 205"/>
+  <path class="assoc" d="M195 465 L292 320"/>
+  <path class="assoc" d="M195 475 L292 435"/>
+  <path class="assoc" d="M195 485 L292 550"/>
+  <path class="assoc" d="M195 495 L292 665"/>
+  <path class="assoc" d="M195 505 L292 780"/>
+  <path class="assoc" d="M195 480 C420 470 610 470 740 470"/>
+
+  <!-- Admin associations: clean fan lines -->
+  <path class="assoc" d="M1510 455 L1408 205"/>
+  <path class="assoc" d="M1510 465 L1408 320"/>
+  <path class="assoc" d="M1510 475 L1408 435"/>
+  <path class="assoc" d="M1510 485 L1408 550"/>
+  <path class="assoc" d="M1510 495 L1408 665"/>
+  <path class="assoc" d="M1510 505 L1408 780"/>
+  <path class="assoc" d="M1510 480 C1280 470 1090 470 960 470"/>
+
+  <!-- Include / extend relationships to login, spaced to avoid clutter -->
+  <path class="rel" d="M545 320 C650 340 720 395 770 445"/>
+  <text class="text small" x="640" y="360">&lt;&lt;include&gt;&gt;</text>
+
+  <path class="rel" d="M545 435 C635 438 710 450 742 462"/>
+  <text class="text small" x="630" y="430">&lt;&lt;include&gt;&gt;</text>
+
+  <path class="rel" d="M545 550 C655 535 720 505 752 488"/>
+  <text class="text small" x="635" y="530">&lt;&lt;include&gt;&gt;</text>
+
+  <path class="rel" d="M545 665 C665 620 735 540 780 505"/>
+  <text class="text small" x="650" y="615">&lt;&lt;include&gt;&gt;</text>
+
+  <path class="rel" d="M545 780 C680 690 760 555 805 512"/>
+  <text class="text small" x="665" y="705">&lt;&lt;include&gt;&gt;</text>
+
+  <path class="rel" d="M720 241 C725 315 765 395 810 435"/>
+  <text class="text small" x="733" y="330">&lt;&lt;extend&gt;&gt;</text>
+
+  <path class="rel" d="M980 241 C975 320 935 398 890 435"/>
+  <text class="text small" x="925" y="330">&lt;&lt;extend&gt;&gt;</text>
+
+  <path class="rel" d="M1152 320 C1045 340 980 400 930 445"/>
+  <text class="text small" x="1015" y="360">&lt;&lt;include&gt;&gt;</text>
+
+  <path class="rel" d="M1152 435 C1060 438 990 450 958 462"/>
+  <text class="text small" x="1015" y="430">&lt;&lt;include&gt;&gt;</text>
+
+  <path class="rel" d="M1152 550 C1040 535 980 505 948 488"/>
+  <text class="text small" x="1010" y="530">&lt;&lt;include&gt;&gt;</text>
+
+  <path class="rel" d="M1152 665 C1030 620 960 540 920 505"/>
+  <text class="text small" x="990" y="615">&lt;&lt;include&gt;&gt;</text>
+
+  <path class="rel" d="M1152 780 C1015 690 940 555 895 512"/>
+  <text class="text small" x="975" y="705">&lt;&lt;include&gt;&gt;</text>
+
+  <path class="rel" d="M850 742 V512"/>
+  <text class="text small" x="862" y="640">&lt;&lt;include&gt;&gt;</text>
+</svg>

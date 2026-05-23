@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="900" viewBox="0 0 1500 900">
+  <defs><style>.bg{fill:#f6f8fb}.panel{fill:#fff;stroke:#d7deea;stroke-width:2}.item{fill:#f8fafc;stroke:#dbe3ef;stroke-width:2}.btn{fill:#2563eb}.text{font-family:Arial,sans-serif;fill:#0f172a}.muted{fill:#64748b}.title{font-size:32px;font-weight:800}.label{font-size:18px;font-weight:700}.small{font-size:14px}</style></defs>
+  <rect class="bg" width="1500" height="900" rx="28"/>
+  <text class="text title" x="70" y="70">Lịch sử xử lý và kho lưu trữ</text><text class="muted small" x="70" y="100">Quản lý các job đã xử lý, tải lại SRT hoặc video kết quả</text>
+  <rect class="panel" x="70" y="150" width="640" height="650" rx="24"/><text class="text label" x="110" y="205">Lịch sử xử lý</text>
+  <g transform="translate(110 240)">
+    <rect class="item" width="560" height="95" rx="14"/><text class="text label" x="25" y="38">extract_subtitles</text><text class="muted small" x="25" y="68">Đã tạo 42 đoạn phụ đề tiếng Việt.</text><text class="muted small" x="420" y="38">completed</text>
+    <rect class="item" y="120" width="560" height="95" rx="14"/><text class="text label" x="25" y="158">edit_subtitles</text><text class="muted small" x="25" y="188">Đã cập nhật phụ đề sau chỉnh sửa.</text><text class="muted small" x="420" y="158">completed</text>
+    <rect class="item" y="240" width="560" height="95" rx="14"/><text class="text label" x="25" y="278">download_srt</text><text class="muted small" x="25" y="308">Tải file phụ đề SRT.</text><text class="muted small" x="420" y="278">completed</text>
+  </g>
+  <rect class="panel" x="790" y="150" width="640" height="650" rx="24"/><text class="text label" x="830" y="205">Kho lưu trữ</text>
+  <g transform="translate(830 240)">
+    <rect class="item" width="560" height="120" rx="14"/><text class="text label" x="25" y="40">project-demo.mp4</text><text class="muted small" x="25" y="70">Video • completed • 42 subtitles</text><rect class="btn" x="330" y="38" width="90" height="40" rx="10"/><text fill="#fff" class="small" x="375" y="63" text-anchor="middle">SRT</text><rect class="btn" x="435" y="38" width="90" height="40" rx="10"/><text fill="#fff" class="small" x="480" y="63" text-anchor="middle">MP4</text>
+    <rect class="item" y="150" width="560" height="120" rx="14"/><text class="text label" x="25" y="190">lesson-audio.mp3</text><text class="muted small" x="25" y="220">Audio • completed • 28 subtitles</text><rect class="btn" x="330" y="188" width="90" height="40" rx="10"/><text fill="#fff" class="small" x="375" y="213" text-anchor="middle">SRT</text>
+  </g>
+</svg>

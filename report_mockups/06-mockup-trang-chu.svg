@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="860" viewBox="0 0 1400 860">
+  <defs><style>.bg{fill:#07111f}.panel{fill:#0f1b2d;stroke:#23364f;stroke-width:2}.card{fill:#13223a;stroke:#29415f;stroke-width:2}.accent{fill:#22d3ee}.btn{fill:#22d3ee}.text{font-family:Arial,sans-serif;fill:#f8fafc}.muted{fill:#94a3b8}.title{font-size:54px;font-weight:800}.label{font-size:20px;font-weight:700}.small{font-size:16px}</style></defs>
+  <rect class="bg" width="1400" height="860" rx="32"/>
+  <text class="text label" x="90" y="70">AutoSub SaaS</text><text class="muted small" x="870" y="70">Trang chủ</text><text class="muted small" x="980" y="70">Giới thiệu</text><text class="muted small" x="1100" y="70">Tính năng</text><text class="muted small" x="1220" y="70">Bảng giá</text>
+  <g transform="translate(90 170)">
+    <text class="text title" x="0" y="60">Tạo phụ đề tiếng Việt</text><text class="text title" x="0" y="125">tự động từ video</text>
+    <text class="muted label" x="0" y="185">Upload video hoặc audio đa ngôn ngữ, hệ thống tự động</text><text class="muted label" x="0" y="218">nhận diện giọng nói, dịch và xuất file SRT.</text>
+    <rect class="btn" x="0" y="270" width="190" height="56" rx="14"/><text class="bg label" x="95" y="306" text-anchor="middle">Bắt đầu</text>
+    <rect class="panel" x="220" y="270" width="190" height="56" rx="14"/><text class="text label" x="315" y="306" text-anchor="middle">Xem demo</text>
+  </g>
+  <g transform="translate(820 150)">
+    <rect class="panel" width="470" height="430" rx="28"/><rect class="card" x="38" y="45" width="394" height="90" rx="18"/><text class="text label" x="70" y="88">Video project.mp4</text><text class="muted small" x="70" y="115">Ngôn ngữ nguồn: English</text>
+    <rect class="card" x="38" y="165" width="394" height="68" rx="16"/><text class="accent label" x="70" y="207">Whisper → NLLB → Gemini</text>
+    <rect class="card" x="38" y="260" width="394" height="110" rx="16"/><text class="text small" x="70" y="300">00:00:02,000 → 00:00:05,000</text><text class="muted label" x="70" y="335">Xin chào, đây là phụ đề tiếng Việt.</text>
+  </g>
+  <g transform="translate(90 670)">
+    <rect class="card" width="360" height="110" rx="18"/><text class="text label" x="30" y="45">Nhận diện giọng nói</text><text class="muted small" x="30" y="75">Whisper đa ngôn ngữ</text>
+    <rect class="card" x="410" width="360" height="110" rx="18"/><text class="text label" x="440" y="45">Tạo SRT chuẩn</text><text class="muted small" x="440" y="75">Tải về hoặc chỉnh sửa</text>
+    <rect class="card" x="820" width="360" height="110" rx="18"/><text class="text label" x="850" y="45">Lưu lịch sử</text><text class="muted small" x="850" y="75">Quản lý các job đã xử lý</text>
+  </g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <defs><style>.paper{fill:#fff}.node{fill:#fff;stroke:#111;stroke-width:2}.line{stroke:#111;stroke-width:1.8;fill:none;marker-end:url(#m)}.text{font-family:"Times New Roman",serif;fill:#111}.title{font-size:24px;font-weight:700}.label{font-size:19px}</style><marker id="m" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10" fill="none" stroke="#111" stroke-width="1.4"/></marker></defs>
+  <rect class="paper" width="1200" height="900"/><text class="text title" x="600" y="55" text-anchor="middle">Biểu đồ hoạt động: Xem lịch sử xử lý</text>
+  <circle class="node" cx="600" cy="105" r="18"/><circle fill="#111" cx="600" cy="105" r="9"/><path class="line" d="M600 123 V165"/>
+  <rect class="node" x="445" y="165" width="310" height="62" rx="16"/><text class="text label" x="600" y="203" text-anchor="middle">Mở panel lịch sử</text><path class="line" d="M600 227 V285"/>
+  <rect class="node" x="415" y="285" width="370" height="62" rx="16"/><text class="text label" x="600" y="323" text-anchor="middle">Gửi yêu cầu theo user_id</text><path class="line" d="M600 347 V405"/>
+  <rect class="node" x="385" y="405" width="430" height="62" rx="16"/><text class="text label" x="600" y="443" text-anchor="middle">Truy vấn bảng processing_history</text><path class="line" d="M600 467 V525"/>
+  <rect class="node" x="400" y="525" width="400" height="62" rx="16"/><text class="text label" x="600" y="563" text-anchor="middle">Sắp xếp theo thời gian mới nhất</text><path class="line" d="M600 587 V645"/>
+  <rect class="node" x="410" y="645" width="380" height="62" rx="16"/><text class="text label" x="600" y="683" text-anchor="middle">Hiển thị danh sách lịch sử</text><path class="line" d="M600 707 V785"/>
+  <circle class="node" cx="600" cy="785" r="22"/><circle fill="#111" cx="600" cy="785" r="13"/>
+</svg>

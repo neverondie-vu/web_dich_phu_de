@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760">
+  <defs>
+    <style>
+      .bg{fill:#f6f8fb}.card{fill:#fff;stroke:#d7deea;stroke-width:2}.primary{fill:#2563eb}.soft{fill:#e8f1ff}.text{font-family:Arial,sans-serif;fill:#172033}.muted{fill:#64748b}.title{font-size:32px;font-weight:700}.label{font-size:20px;font-weight:700}.small{font-size:16px}.arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#m)}
+    </style>
+    <marker id="m" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#2563eb"/></marker>
+  </defs>
+  <rect class="bg" width="1400" height="760" rx="28"/>
+  <text class="text title" x="700" y="62" text-anchor="middle">Quy trình nghiệp vụ tạo phụ đề tự động</text>
+  <g transform="translate(70 150)">
+    <rect class="card" x="0" y="0" width="190" height="110" rx="18"/><text class="text label" x="95" y="45" text-anchor="middle">Đăng nhập</text><text class="muted small" x="95" y="75" text-anchor="middle">Firebase Auth</text>
+    <path class="arrow" d="M200 55 H275"/>
+    <rect class="card" x="285" y="0" width="190" height="110" rx="18"/><text class="text label" x="380" y="45" text-anchor="middle">Upload file</text><text class="muted small" x="380" y="75" text-anchor="middle">Video / Audio</text>
+    <path class="arrow" d="M485 55 H560"/>
+    <rect class="card" x="570" y="0" width="190" height="110" rx="18"/><text class="text label" x="665" y="42" text-anchor="middle">Tạo job</text><text class="muted small" x="665" y="72" text-anchor="middle">Lưu DB + file</text>
+    <path class="arrow" d="M770 55 H845"/>
+    <rect class="card" x="855" y="0" width="190" height="110" rx="18"/><text class="text label" x="950" y="42" text-anchor="middle">Xử lý AI</text><text class="muted small" x="950" y="72" text-anchor="middle">Whisper + NLLB</text>
+    <path class="arrow" d="M1055 55 H1130"/>
+    <rect class="card" x="1140" y="0" width="190" height="110" rx="18"/><text class="text label" x="1235" y="42" text-anchor="middle">Tạo SRT</text><text class="muted small" x="1235" y="72" text-anchor="middle">JSON + SRT</text>
+  </g>
+  <path class="arrow" d="M1305 260 C1305 355 1185 355 1185 430"/>
+  <g transform="translate(185 430)">
+    <rect class="card" x="855" y="0" width="230" height="120" rx="18"/><text class="text label" x="970" y="45" text-anchor="middle">Xem / chỉnh sửa</text><text class="muted small" x="970" y="78" text-anchor="middle">Editor phụ đề</text>
+    <path class="arrow" d="M845 60 H730"/>
+    <rect class="card" x="490" y="0" width="230" height="120" rx="18"/><text class="text label" x="605" y="45" text-anchor="middle">Tải SRT</text><text class="muted small" x="605" y="78" text-anchor="middle">File phụ đề</text>
+    <path class="arrow" d="M480 60 H365"/>
+    <rect class="card" x="125" y="0" width="230" height="120" rx="18"/><text class="text label" x="240" y="45" text-anchor="middle">Xuất video</text><text class="muted small" x="240" y="78" text-anchor="middle">MP4 hardsub</text>
+  </g>
+  <rect class="soft" x="92" y="650" width="1216" height="56" rx="18"/>
+  <text class="text small" x="700" y="685" text-anchor="middle">Mỗi bước được ghi vào processing_history để phục vụ lịch sử xử lý và quản trị hệ thống.</text>
+</svg>

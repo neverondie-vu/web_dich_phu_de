@@ -39,12 +39,12 @@ def parse_srt_to_list(srt_string: str) -> list:
 # ====================================================
 # GIAI ĐOẠN 1: TÁCH CHỮ TỪ VIDEO (KHÔNG ÉP HARD SUB)
 # ====================================================
-def extract_subtitles_from_video(input_path: str, src_language: str) -> list:
+def extract_subtitles_from_video(input_path: str, src_language: str, whisper_model: str = "small") -> list:
     """Pipeline Giai đoạn 1: Video/Audio -> Dịch NLLB -> Làm mượt bằng Gemini -> Trả về mảng JSON"""
     print(f"Bắt đầu trích xuất phụ đề từ file: {input_path}")
     
     # 1. Trích xuất audio
-    audio_path = input_path.rsplit('.', 1)[0] + '.wav'
+    audio_path = input_path.rsplit('.', 1)[0] + '_whisper.wav'
     print("1. Đang trích xuất âm thanh...")
     (
         ffmpeg
@@ -56,7 +56,7 @@ def extract_subtitles_from_video(input_path: str, src_language: str) -> list:
 
     # 2. Nhận diện giọng nói
     print("2. Đang nhận diện giọng nói (Whisper)...")
-    model = whisper.load_model('small')
+    model = whisper.load_model(whisper_model)
     result = model.transcribe(audio_path, language=src_language, verbose=False)
 
     # 3. Dịch thuật thô bằng NLLB

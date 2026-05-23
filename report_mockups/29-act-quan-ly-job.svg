@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="1150" viewBox="0 0 1300 1150">
+  <defs><style>.paper{fill:#fff}.node{fill:#fff;stroke:#111;stroke-width:2}.line{stroke:#111;stroke-width:1.8;fill:none;marker-end:url(#m)}.text{font-family:"Times New Roman",serif;fill:#111}.title{font-size:24px;font-weight:700}.label{font-size:19px}.small{font-size:16px}</style><marker id="m" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10" fill="none" stroke="#111" stroke-width="1.4"/></marker></defs>
+  <rect class="paper" width="1300" height="1150"/><text class="text title" x="650" y="55" text-anchor="middle">Biểu đồ hoạt động: Admin quản lý job</text>
+  <circle class="node" cx="650" cy="105" r="18"/><circle fill="#111" cx="650" cy="105" r="9"/><path class="line" d="M650 123 V165"/>
+  <rect class="node" x="455" y="165" width="390" height="62" rx="16"/><text class="text label" x="650" y="203" text-anchor="middle">Admin mở trang quản lý job</text><path class="line" d="M650 227 V285"/>
+  <path class="node" d="M650 285 L790 370 L650 455 L510 370 Z"/><text class="text label" x="650" y="377" text-anchor="middle">Có quyền admin?</text>
+  <path class="line" d="M510 370 H285 V595"/><text class="text small" x="400" y="350">Không</text><rect class="node" x="135" y="595" width="300" height="62" rx="16"/><text class="text label" x="285" y="633" text-anchor="middle">Từ chối truy cập</text><path class="line" d="M285 657 V1050 H632"/>
+  <path class="line" d="M650 455 V525"/><text class="text small" x="675" y="495">Có</text><rect class="node" x="440" y="525" width="420" height="62" rx="16"/><text class="text label" x="650" y="563" text-anchor="middle">Truy vấn danh sách video_jobs</text><path class="line" d="M650 587 V645"/>
+  <rect class="node" x="425" y="645" width="450" height="62" rx="16"/><text class="text label" x="650" y="683" text-anchor="middle">Ghép thông tin users và media_files</text><path class="line" d="M650 707 V765"/>
+  <rect class="node" x="440" y="765" width="420" height="62" rx="16"/><text class="text label" x="650" y="803" text-anchor="middle">Hiển thị bảng job và trạng thái</text><path class="line" d="M650 827 V885"/>
+  <rect class="node" x="455" y="885" width="390" height="62" rx="16"/><text class="text label" x="650" y="923" text-anchor="middle">Admin xem hoặc tải kết quả</text><path class="line" d="M650 947 V1050"/>
+  <circle class="node" cx="650" cy="1050" r="22"/><circle fill="#111" cx="650" cy="1050" r="13"/>
+</svg>

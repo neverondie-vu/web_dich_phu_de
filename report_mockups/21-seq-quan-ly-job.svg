@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1550" height="820" viewBox="0 0 1550 820">
+  <defs><style>.paper{fill:#fff}.line{stroke:#111;stroke-width:1.7;fill:none}.dash{stroke:#111;stroke-width:1.4;stroke-dasharray:7 6;fill:none}.box{fill:#fff;stroke:#111;stroke-width:1.8}.act{fill:#f9fafb;stroke:#111;stroke-width:1.5}.text{font-family:"Times New Roman",serif;fill:#111}.title{font-size:22px;font-weight:700}.label{font-size:18px;font-weight:700}.msg{font-size:15px}.arrow{marker-end:url(#m)}.return{marker-end:url(#m);stroke-dasharray:7 6}</style><marker id="m" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10" fill="none" stroke="#111" stroke-width="1.4"/></marker></defs>
+  <rect class="paper" width="1550" height="820"/><text class="text title" x="775" y="55" text-anchor="middle">Biểu đồ trình tự: Admin quản lý job xử lý</text>
+  <rect class="box" x="80" y="100" width="160" height="52"/><text class="text label" x="160" y="132" text-anchor="middle">Admin</text>
+  <rect class="box" x="360" y="100" width="190" height="52"/><text class="text label" x="455" y="132" text-anchor="middle">Admin UI</text>
+  <rect class="box" x="660" y="100" width="190" height="52"/><text class="text label" x="755" y="132" text-anchor="middle">Backend API</text>
+  <rect class="box" x="960" y="100" width="190" height="52"/><text class="text label" x="1055" y="132" text-anchor="middle">Firebase</text>
+  <rect class="box" x="1250" y="100" width="190" height="52"/><text class="text label" x="1345" y="132" text-anchor="middle">Database</text>
+  <path class="dash" d="M160 152 V760"/><path class="dash" d="M455 152 V760"/><path class="dash" d="M755 152 V760"/><path class="dash" d="M1055 152 V760"/><path class="dash" d="M1345 152 V760"/>
+  <rect class="act" x="447" y="225" width="16" height="395"/><rect class="act" x="747" y="295" width="16" height="320"/><rect class="act" x="1047" y="350" width="16" height="90"/><rect class="act" x="1337" y="485" width="16" height="90"/>
+  <path class="line arrow" d="M160 230 H447"/><text class="text msg" x="304" y="220" text-anchor="middle">Mở tab quản lý job</text>
+  <path class="line arrow" d="M463 310 H747"/><text class="text msg" x="605" y="300" text-anchor="middle">GET /admin/jobs + token</text>
+  <path class="line arrow" d="M763 365 H1047"/><text class="text msg" x="905" y="355" text-anchor="middle">Xác thực Firebase token</text>
+  <path class="line return" d="M1047 425 H763"/><text class="text msg" x="905" y="415" text-anchor="middle">Token hợp lệ, role=admin</text>
+  <path class="line arrow" d="M763 500 H1337"/><text class="text msg" x="1050" y="490" text-anchor="middle">Truy vấn video_jobs, users, media_files</text>
+  <path class="line return" d="M1337 560 H763"/><text class="text msg" x="1050" y="550" text-anchor="middle">Trả danh sách job</text>
+  <path class="line return" d="M747 625 H463"/><text class="text msg" x="605" y="615" text-anchor="middle">JSON jobs</text>
+  <path class="line return" d="M447 690 H160"/><text class="text msg" x="304" y="680" text-anchor="middle">Hiển thị bảng job và trạng thái</text>
+</svg>

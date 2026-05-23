@@ -1,0 +1,12 @@
+
+backend/uploads/
+
+
+.env
+__pycache__/
+*.pyc
+logs/
+node_modules/
+frontend/react-client/dist/
+frontend/next-client/.next/
+frontend/next-client/out/

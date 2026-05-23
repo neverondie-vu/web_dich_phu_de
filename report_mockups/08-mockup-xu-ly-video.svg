@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="900" viewBox="0 0 1500 900">
+  <defs><style>.bg{fill:#08111f}.panel{fill:#101d31;stroke:#263b58;stroke-width:2}.card{fill:#14233a;stroke:#2b4568;stroke-width:2}.cyan{fill:#22d3ee}.text{font-family:Arial,sans-serif;fill:#f8fafc}.muted{fill:#94a3b8}.title{font-size:32px;font-weight:800}.label{font-size:18px;font-weight:700}.small{font-size:14px}</style></defs>
+  <rect class="bg" width="1500" height="900" rx="28"/>
+  <text class="text title" x="70" y="70">Không gian xử lý video</text><text class="muted small" x="70" y="100">Upload video/audio, theo dõi tiến trình và tạo phụ đề tiếng Việt</text>
+  <rect class="panel" x="70" y="140" width="410" height="680" rx="24"/><text class="text label" x="105" y="190">Thiết lập đầu vào</text>
+  <rect class="card" x="105" y="230" width="340" height="90" rx="16"/><text class="muted small" x="130" y="265">Chế độ</text><text class="text label" x="130" y="295">Video MP4</text>
+  <rect class="card" x="105" y="350" width="340" height="140" rx="16"/><text class="muted small" x="130" y="385">File đã chọn</text><text class="text label" x="130" y="420">project-demo.mp4</text><text class="muted small" x="130" y="455">Ngôn ngữ nguồn: English</text>
+  <rect class="cyan" x="105" y="530" width="340" height="58" rx="16"/><text class="bg label" x="275" y="567" text-anchor="middle">Tải lên và xử lý</text>
+  <rect class="panel" x="520" y="140" width="420" height="680" rx="24"/><text class="text label" x="555" y="190">Hàng đợi xử lý</text>
+  <rect class="card" x="555" y="230" width="350" height="110" rx="16"/><text class="text label" x="580" y="270">job_9684f3d0</text><text class="muted small" x="580" y="305">Đang nhận diện giọng nói...</text>
+  <rect class="card" x="555" y="370" width="350" height="110" rx="16"/><text class="text label" x="580" y="410">job_a87f50db</text><text class="muted small" x="580" y="445">Đã tạo SRT</text>
+  <rect class="panel" x="980" y="140" width="450" height="680" rx="24"/><text class="text label" x="1015" y="190">Kết quả phụ đề</text>
+  <rect class="card" x="1015" y="230" width="380" height="90" rx="16"/><text class="muted small" x="1040" y="265">00:00:01,000 → 00:00:04,000</text><text class="text label" x="1040" y="295">Xin chào mọi người.</text>
+  <rect class="card" x="1015" y="345" width="380" height="90" rx="16"/><text class="muted small" x="1040" y="380">00:00:05,000 → 00:00:08,000</text><text class="text label" x="1040" y="410">Đây là bản phụ đề tự động.</text>
+  <rect class="cyan" x="1015" y="690" width="180" height="54" rx="14"/><text class="bg label" x="1105" y="724" text-anchor="middle">Tải SRT</text><rect class="card" x="1215" y="690" width="180" height="54" rx="14"/><text class="text label" x="1305" y="724" text-anchor="middle">Burn video</text>
+</svg>

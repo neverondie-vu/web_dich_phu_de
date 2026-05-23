@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="1100" viewBox="0 0 1700 1100">
+  <defs>
+    <style>
+      .paper{fill:#fff}.line{stroke:#111;stroke-width:1.7;fill:none}.dash{stroke:#111;stroke-width:1.4;stroke-dasharray:7 6;fill:none}.box{fill:#fff;stroke:#111;stroke-width:1.8}.act{fill:#f9fafb;stroke:#111;stroke-width:1.5}.text{font-family:"Times New Roman",serif;fill:#111}.title{font-size:22px;font-weight:700}.label{font-size:18px;font-weight:700}.small{font-size:16px}.msg{font-size:15px}.arrow{marker-end:url(#m)}.return{marker-end:url(#m);stroke-dasharray:7 6}
+    </style>
+    <marker id="m" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10" fill="none" stroke="#111" stroke-width="1.4"/>
+    </marker>
+  </defs>
+  <rect class="paper" width="1700" height="1100"/>
+  <text class="text title" x="850" y="55" text-anchor="middle">Biểu đồ trình tự: Người dùng tạo phụ đề tự động</text>
+
+  <!-- participants -->
+  <g>
+    <rect class="box" x="70" y="100" width="170" height="52"/><text class="text label" x="155" y="132" text-anchor="middle">Người dùng</text>
+    <rect class="box" x="320" y="100" width="190" height="52"/><text class="text label" x="415" y="132" text-anchor="middle">Frontend</text>
+    <rect class="box" x="600" y="100" width="190" height="52"/><text class="text label" x="695" y="132" text-anchor="middle">Backend API</text>
+    <rect class="box" x="880" y="100" width="190" height="52"/><text class="text label" x="975" y="132" text-anchor="middle">Database</text>
+    <rect class="box" x="1160" y="100" width="190" height="52"/><text class="text label" x="1255" y="132" text-anchor="middle">AI Pipeline</text>
+    <rect class="box" x="1440" y="100" width="190" height="52"/><text class="text label" x="1535" y="132" text-anchor="middle">File Storage</text>
+  </g>
+
+  <!-- lifelines -->
+  <path class="dash" d="M155 152 V1030"/><path class="dash" d="M415 152 V1030"/><path class="dash" d="M695 152 V1030"/><path class="dash" d="M975 152 V1030"/><path class="dash" d="M1255 152 V1030"/><path class="dash" d="M1535 152 V1030"/>
+
+  <!-- activations -->
+  <rect class="act" x="407" y="220" width="16" height="690"/><rect class="act" x="687" y="285" width="16" height="620"/><rect class="act" x="967" y="385" width="16" height="145"/><rect class="act" x="1247" y="560" width="16" height="210"/><rect class="act" x="1527" y="325" width="16" height="470"/>
+
+  <!-- messages -->
+  <path class="line arrow" d="M155 225 H407"/><text class="text msg" x="280" y="214" text-anchor="middle">Chọn file, ngôn ngữ nguồn</text>
+  <path class="line arrow" d="M155 270 H407"/><text class="text msg" x="280" y="260" text-anchor="middle">Nhấn tải lên và xử lý</text>
+  <path class="line arrow" d="M423 315 H687"/><text class="text msg" x="555" y="305" text-anchor="middle">POST /api/upload hoặc /api/upload-audio</text>
+  <path class="line arrow" d="M703 360 H1527"/><text class="text msg" x="1115" y="350" text-anchor="middle">Lưu file vào uploads/video hoặc uploads/audio</text>
+  <path class="line return" d="M1527 395 H703"/><text class="text msg" x="1115" y="385" text-anchor="middle">Trả đường dẫn file</text>
+  <path class="line arrow" d="M703 430 H967"/><text class="text msg" x="835" y="420" text-anchor="middle">Tạo video_jobs</text>
+  <path class="line arrow" d="M703 475 H967"/><text class="text msg" x="835" y="465" text-anchor="middle">Tạo media_files, history</text>
+  <path class="line return" d="M967 520 H703"/><text class="text msg" x="835" y="510" text-anchor="middle">Commit thành công</text>
+  <path class="line return" d="M687 555 H423"/><text class="text msg" x="555" y="545" text-anchor="middle">Trả job_id, status=queued</text>
+  <path class="line arrow" d="M703 590 H1247"/><text class="text msg" x="975" y="580" text-anchor="middle">Chạy background task xử lý phụ đề</text>
+  <path class="line arrow" d="M1263 635 H1527"/><text class="text msg" x="1395" y="625" text-anchor="middle">Đọc file media</text>
+  <path class="line return" d="M1527 675 H1263"/><text class="text msg" x="1395" y="665" text-anchor="middle">Trả file đầu vào</text>
+  <path class="line arrow" d="M1263 720 H1527"/><text class="text msg" x="1395" y="710" text-anchor="middle">Ghi JSON và SRT</text>
+  <path class="line arrow" d="M1263 770 H967"/><text class="text msg" x="1115" y="760" text-anchor="middle">Cập nhật subtitles, status</text>
+  <path class="line arrow" d="M423 825 H687"/><text class="text msg" x="555" y="815" text-anchor="middle">GET /api/status/{job_id}</text>
+  <path class="line arrow" d="M703 860 H967"/><text class="text msg" x="835" y="850" text-anchor="middle">Truy vấn job và subtitles</text>
+  <path class="line return" d="M967 895 H703"/><text class="text msg" x="835" y="885" text-anchor="middle">Trả dữ liệu phụ đề</text>
+  <path class="line return" d="M687 930 H423"/><text class="text msg" x="555" y="920" text-anchor="middle">Hiển thị phụ đề trên giao diện</text>
+  <path class="line return" d="M407 970 H155"/><text class="text msg" x="280" y="960" text-anchor="middle">Người dùng xem/chỉnh sửa/tải SRT</text>
+</svg>

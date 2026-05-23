@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="1200" viewBox="0 0 1700 1200">
+  <defs>
+    <style>
+      .paper{fill:#fff}
+      .cls{fill:#fff;stroke:#111;stroke-width:2}
+      .sep{stroke:#111;stroke-width:1.5}
+      .rel{stroke:#111;stroke-width:1.7;fill:none}
+      .text{font-family:"Times New Roman",serif;fill:#111}
+      .name{font-size:18px;font-weight:700}
+      .attr{font-size:15px}
+      .multi{font-size:15px}
+      .title{font-size:22px;font-weight:700}
+    </style>
+  </defs>
+
+  <rect class="paper" width="1700" height="1200"/>
+  <text class="text title" x="850" y="55" text-anchor="middle">BIỂU ĐỒ LỚP HỆ THỐNG WEB SAAS TẠO PHỤ ĐỀ TỰ ĐỘNG</text>
+
+  <!-- NguoiDung -->
+  <g transform="translate(80 110)">
+    <rect class="cls" width="300" height="285"/>
+    <line class="sep" x1="0" y1="42" x2="300" y2="42"/>
+    <line class="sep" x1="0" y1="215" x2="300" y2="215"/>
+    <text class="text name" x="150" y="27" text-anchor="middle">NguoiDung</text>
+    <text class="text attr" x="12" y="68">+ maNguoiDung: string</text>
+    <text class="text attr" x="12" y="93">+ email: string</text>
+    <text class="text attr" x="12" y="118">+ tenDangNhap: string</text>
+    <text class="text attr" x="12" y="143">+ vaiTro: string</text>
+    <text class="text attr" x="12" y="168">+ goiDichVu: string</text>
+    <text class="text attr" x="12" y="193">+ ngayTao: datetime</text>
+    <text class="text attr" x="12" y="238">+ dangNhap()</text>
+    <text class="text attr" x="12" y="263">+ capNhatThongTin()</text>
+  </g>
+
+  <!-- CongViecVideo -->
+  <g transform="translate(650 90)">
+    <rect class="cls" width="360" height="350"/>
+    <line class="sep" x1="0" y1="42" x2="360" y2="42"/>
+    <line class="sep" x1="0" y1="275" x2="360" y2="275"/>
+    <text class="text name" x="180" y="27" text-anchor="middle">CongViecVideo</text>
+    <text class="text attr" x="12" y="68">+ maCongViec: string</text>
+    <text class="text attr" x="12" y="93">+ tenTep: string</text>
+    <text class="text attr" x="12" y="118">+ ngonNguNguon: string</text>
+    <text class="text attr" x="12" y="143">+ trangThai: string</text>
+    <text class="text attr" x="12" y="168">+ duongDanVideoGoc: string</text>
+    <text class="text attr" x="12" y="193">+ duongDanSRT: string</text>
+    <text class="text attr" x="12" y="218">+ duongDanVideoPhuDe: string</text>
+    <text class="text attr" x="12" y="243">+ ngayTao: datetime</text>
+    <text class="text attr" x="12" y="298">+ capNhatTrangThai()</text>
+    <text class="text attr" x="12" y="323">+ layKetQuaXuLy()</text>
+  </g>
+
+  <!-- TepPhuongTien -->
+  <g transform="translate(1260 110)">
+    <rect class="cls" width="330" height="310"/>
+    <line class="sep" x1="0" y1="42" x2="330" y2="42"/>
+    <line class="sep" x1="0" y1="240" x2="330" y2="240"/>
+    <text class="text name" x="165" y="27" text-anchor="middle">TepPhuongTien</text>
+    <text class="text attr" x="12" y="68">+ maTep: string</text>
+    <text class="text attr" x="12" y="93">+ maCongViec: string</text>
+    <text class="text attr" x="12" y="118">+ maNguoiDung: string</text>
+    <text class="text attr" x="12" y="143">+ tenTepGoc: string</text>
+    <text class="text attr" x="12" y="168">+ loaiTep: string</text>
+    <text class="text attr" x="12" y="193">+ ngonNguNguon: string</text>
+    <text class="text attr" x="12" y="218">+ duongDanTep: string</text>
+    <text class="text attr" x="12" y="263">+ kiemTraDinhDang()</text>
+    <text class="text attr" x="12" y="288">+ layDuongDanTep()</text>
+  </g>
+
+  <!-- PhuDe -->
+  <g transform="translate(80 540)">
+    <rect class="cls" width="330" height="310"/>
+    <line class="sep" x1="0" y1="42" x2="330" y2="42"/>
+    <line class="sep" x1="0" y1="240" x2="330" y2="240"/>
+    <text class="text name" x="165" y="27" text-anchor="middle">PhuDe</text>
+    <text class="text attr" x="12" y="68">+ maPhuDe: string</text>
+    <text class="text attr" x="12" y="93">+ maCongViec: string</text>
+    <text class="text attr" x="12" y="118">+ maTep: string</text>
+    <text class="text attr" x="12" y="143">+ ngonNguDich: string</text>
+    <text class="text attr" x="12" y="168">+ duongDanJSON: string</text>
+    <text class="text attr" x="12" y="193">+ duongDanSRT: string</text>
+    <text class="text attr" x="12" y="218">+ soDoanPhuDe: int</text>
+    <text class="text attr" x="12" y="263">+ capNhatNoiDung()</text>
+    <text class="text attr" x="12" y="288">+ taoTepSRT()</text>
+  </g>
+
+  <!-- LichSuXuLy -->
+  <g transform="translate(650 570)">
+    <rect class="cls" width="360" height="285"/>
+    <line class="sep" x1="0" y1="42" x2="360" y2="42"/>
+    <line class="sep" x1="0" y1="215" x2="360" y2="215"/>
+    <text class="text name" x="180" y="27" text-anchor="middle">LichSuXuLy</text>
+    <text class="text attr" x="12" y="68">+ maLichSu: int</text>
+    <text class="text attr" x="12" y="93">+ maCongViec: string</text>
+    <text class="text attr" x="12" y="118">+ maNguoiDung: string</text>
+    <text class="text attr" x="12" y="143">+ hanhDong: string</text>
+    <text class="text attr" x="12" y="168">+ trangThai: string</text>
+    <text class="text attr" x="12" y="193">+ thongBao: text</text>
+    <text class="text attr" x="12" y="238">+ ghiLichSu()</text>
+    <text class="text attr" x="12" y="263">+ layLichSuNguoiDung()</text>
+  </g>
+
+  <!-- QuyTrinhTaoPhuDe -->
+  <g transform="translate(1260 560)">
+    <rect class="cls" width="330" height="260"/>
+    <line class="sep" x1="0" y1="42" x2="330" y2="42"/>
+    <line class="sep" x1="0" y1="130" x2="330" y2="130"/>
+    <text class="text name" x="165" y="27" text-anchor="middle">QuyTrinhTaoPhuDe</text>
+    <text class="text attr" x="12" y="68">+ moHinhNhanDang: string</text>
+    <text class="text attr" x="12" y="93">+ ngonNguDich: string</text>
+    <text class="text attr" x="12" y="118">+ ngonNguNguon: string</text>
+    <text class="text attr" x="12" y="153">+ tachAmThanhTuVideo()</text>
+    <text class="text attr" x="12" y="178">+ nhanDangLoiNoi()</text>
+    <text class="text attr" x="12" y="203">+ dichSangTiengViet()</text>
+    <text class="text attr" x="12" y="228">+ ganPhuDeVaoVideo()</text>
+  </g>
+
+  <!-- DichVuQuanTri -->
+  <g transform="translate(460 940)">
+    <rect class="cls" width="330" height="205"/>
+    <line class="sep" x1="0" y1="42" x2="330" y2="42"/>
+    <line class="sep" x1="0" y1="95" x2="330" y2="95"/>
+    <text class="text name" x="165" y="27" text-anchor="middle">DichVuQuanTri</text>
+    <text class="text attr" x="12" y="68">+ cauHinhHeThong: object</text>
+    <text class="text attr" x="12" y="120">+ xemThongKe()</text>
+    <text class="text attr" x="12" y="145">+ quanLyCongViec()</text>
+    <text class="text attr" x="12" y="170">+ capNhatCauHinh()</text>
+  </g>
+
+  <!-- relationships -->
+  <path class="rel" d="M380 250 H650"/>
+  <text class="text multi" x="425" y="238">1</text><text class="text multi" x="615" y="238">0..n</text>
+
+  <path class="rel" d="M1010 250 H1260"/>
+  <text class="text multi" x="1030" y="238">1</text><text class="text multi" x="1225" y="238">0..1</text>
+
+  <path class="rel" d="M810 440 V570"/>
+  <text class="text multi" x="825" y="465">1</text><text class="text multi" x="825" y="545">0..n</text>
+
+  <path class="rel" d="M650 700 H410"/>
+  <text class="text multi" x="615" y="688">1</text><text class="text multi" x="430" y="688">0..1</text>
+
+  <path class="rel" d="M1425 420 V560"/>
+  <text class="text multi" x="1440" y="445">1</text><text class="text multi" x="1440" y="535">1</text>
+
+  <path class="rel" d="M1260 690 H1010"/>
+  <text class="text multi" x="1225" y="678">1</text><text class="text multi" x="1030" y="678">0..n</text>
+
+  <path class="rel" d="M790 940 L790 855"/>
+  <text class="text multi" x="805" y="900">sử dụng</text>
+
+  <path class="rel" d="M625 940 C520 865 360 820 270 850"/>
+  <text class="text multi" x="430" y="890">quản trị</text>
+</svg>

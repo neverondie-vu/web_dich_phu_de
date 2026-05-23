@@ -1,0 +1,5 @@
+{
+  "maintenance_mode": false,
+  "blacklisted_ips": [],
+  "whisper_model": "small"
+}
