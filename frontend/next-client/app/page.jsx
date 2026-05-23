@@ -53,19 +53,21 @@ function HomeAuthGroup() {
   if (!user) {
     return (
       <>
-        <div
-          id="auth-slider"
-          className="pointer-events-none absolute z-0 h-[34px] w-[130px] bg-white rounded-full transition-all duration-300 ease-out left-[100px]"
-        />
         <Link
           href="/auth/login"
-          className="relative z-20 w-[100px] whitespace-nowrap text-sm font-semibold text-gray-400 flex items-center justify-center"
+          className="relative flex h-9 w-[104px] -translate-x-5 items-center justify-center self-start whitespace-nowrap rounded-md text-sm font-black text-slate-200 transition duration-200 hover:scale-105 hover:text-white focus:scale-105 focus:text-white"
         >
           Sign in
         </Link>
+        <div className="relative h-3 w-full" aria-hidden="true">
+          <span className="absolute left-4 right-4 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-cyan-300/10 via-cyan-300/55 to-blue-400/10" />
+          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#081225] px-2 text-[11px] font-black leading-none text-cyan-200">
+            Z
+          </span>
+        </div>
         <Link
           href="/auth/register"
-          className="relative z-20 w-[130px] whitespace-nowrap text-sm font-bold text-cyan-400 flex items-center justify-center"
+          className="relative flex h-9 w-[128px] translate-x-5 items-center justify-center self-end whitespace-nowrap rounded-md text-sm font-black text-cyan-200 transition duration-200 hover:scale-105 hover:text-white focus:scale-105 focus:text-white"
         >
           Get Started
         </Link>
@@ -78,20 +80,20 @@ function HomeAuthGroup() {
   const userStatus = isPlus ? "Plus ✨" : "Free";
 
   return (
-    <div className="group relative flex items-center justify-center w-full h-full cursor-pointer">
-      <div className="flex items-center gap-2 px-3 py-1 hover:bg-white/5 rounded-full transition">
+    <div className="group relative flex h-full w-full cursor-pointer items-center justify-center">
+      <div className="flex max-w-full items-center gap-2 rounded-md px-2.5 py-1.5 transition hover:bg-white/5">
         {user.photoURL ? (
           <img
             src={user.photoURL}
             alt={displayName}
-            className="w-7 h-7 rounded-full border border-cyan-400/30 object-cover"
+            className="h-7 w-7 rounded-full border border-cyan-400/30 object-cover"
           />
         ) : (
-          <div className="w-7 h-7 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-300 text-[10px] font-bold border border-cyan-400/20">
+          <div className="flex h-7 w-7 items-center justify-center rounded-full border border-cyan-400/20 bg-cyan-500/20 text-[10px] font-bold text-cyan-300">
             {initial}
           </div>
         )}
-        <span className="text-cyan-300 text-xs font-semibold truncate max-w-[80px]">
+        <span className="max-w-[92px] truncate text-xs font-semibold text-cyan-300">
           Hi, {displayName}
         </span>
         <svg
@@ -104,18 +106,19 @@ function HomeAuthGroup() {
         </svg>
       </div>
 
-      <div className="absolute top-full right-0 mt-3 w-64 bg-gradient-to-br from-[#0b1220]/95 via-[#111827]/95 to-[#0f172a]/95 backdrop-blur-2xl border border-cyan-400/10 rounded-2xl shadow-[0_10px_50px_rgba(0,255,255,0.12)] p-2 opacity-0 invisible translate-y-3 scale-95 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:scale-100 transition-all duration-300 ease-out z-50 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,255,255,0.12),transparent_40%)] pointer-events-none" />
-        <div className="relative px-4 py-3 border-b border-white/5 mb-2">
-          <p className="text-[10px] text-cyan-400/70 uppercase font-bold tracking-[0.25em]">
+      <div className="invisible absolute right-0 top-full z-50 mt-2 w-60 translate-y-2 scale-95 overflow-hidden rounded-lg border border-cyan-400/12 bg-[#0b1220]/96 p-2 opacity-0 shadow-[0_16px_48px_rgba(0,0,0,0.42)] backdrop-blur-2xl transition-all duration-200 ease-out group-hover:visible group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(34,211,238,0.08),transparent_45%)]" />
+        <div className="relative mb-2 rounded-md border border-white/8 bg-white/[0.035] px-3 py-2.5">
+          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-cyan-300/75">
             Tài khoản
           </p>
-          <p className="text-xs text-white truncate font-semibold mt-1">{user.email}</p>
+          <p className="mt-1 truncate text-sm font-bold text-white">{displayName}</p>
+          <p className="mt-0.5 truncate text-[11px] text-slate-400">{user.email}</p>
         </div>
-        <div className="relative px-4 py-3 mb-3 bg-white/[0.04] border border-white/5 rounded-xl flex justify-between items-center hover:bg-white/[0.06] transition">
-          <span className="text-[10px] text-gray-400 font-medium">Gói hiện tại</span>
+        <div className="relative mb-2 flex items-center justify-between rounded-md border border-white/8 bg-white/[0.035] px-3 py-2">
+          <span className="text-[11px] font-semibold text-slate-400">Gói hiện tại</span>
           <span
-            className={`text-[11px] font-bold px-2 py-1 rounded-full ${
+            className={`rounded-full px-2 py-1 text-[10px] font-black ${
               isPlus
                 ? "bg-yellow-500/10 text-yellow-300 border border-yellow-400/20"
                 : "bg-cyan-500/10 text-cyan-300 border border-cyan-400/20"
@@ -126,25 +129,25 @@ function HomeAuthGroup() {
         </div>
         <Link
           href="/app"
-          className="group/item flex items-center gap-3 px-4 py-3 text-xs text-gray-300 hover:bg-cyan-500/10 rounded-xl transition-all duration-200 mb-1 text-left border border-transparent hover:border-cyan-400/10"
+          className="group/item relative mb-1 flex items-center gap-3 rounded-md border border-transparent px-3 py-2.5 text-left text-xs text-slate-300 transition-all duration-200 hover:border-cyan-400/10 hover:bg-cyan-500/10"
         >
-          <div className="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center group-hover/item:scale-110 transition">
-            <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-cyan-500/10 transition group-hover/item:scale-105">
+            <svg className="h-4 w-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <div className="flex flex-col">
-            <span className="font-semibold text-white">Công cụ AutoSub</span>
-            <span className="text-[10px] text-gray-500">Subtitle AI Dashboard</span>
+          <div className="min-w-0">
+            <span className="block truncate font-bold text-white">Công cụ AutoSub</span>
+            <span className="mt-0.5 block truncate text-[10px] text-slate-500">Subtitle workspace</span>
           </div>
         </Link>
         {isAdmin && (
           <Link
             href="/admin"
-            className="group/item flex items-center gap-3 px-4 py-3 text-xs text-red-300 hover:bg-red-500/10 rounded-xl transition-all duration-200 mb-1 text-left border border-transparent hover:border-red-400/10"
+            className="group/item relative mb-1 flex items-center gap-3 rounded-md border border-transparent px-3 py-2.5 text-left text-xs text-red-300 transition-all duration-200 hover:border-red-400/10 hover:bg-red-500/10"
           >
-            <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center group-hover/item:scale-110 transition">
-              <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-red-500/10 transition group-hover/item:scale-105">
+              <svg className="h-4 w-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -154,22 +157,22 @@ function HomeAuthGroup() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
-            <div className="flex flex-col">
-              <span className="font-semibold text-white">Trang Quản Trị</span>
-              <span className="text-[10px] text-red-400">Admin Panel</span>
+            <div className="min-w-0">
+              <span className="block truncate font-bold text-white">Trang quản trị</span>
+              <span className="mt-0.5 block truncate text-[10px] text-red-400">Admin panel</span>
             </div>
           </Link>
         )}
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-4 py-3 text-xs text-red-300 hover:bg-red-500/10 rounded-xl transition-all duration-200 border border-transparent hover:border-red-400/10 mt-1"
+          className="relative mt-1 flex w-full items-center gap-3 rounded-md border border-transparent px-3 py-2.5 text-xs text-red-300 transition-all duration-200 hover:border-red-400/10 hover:bg-red-500/10"
         >
-          <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-red-500/10">
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
           </div>
-          <span className="font-semibold">Đăng xuất</span>
+          <span className="font-bold">Đăng xuất</span>
         </button>
       </div>
     </div>
@@ -211,8 +214,8 @@ export default function HomePage() {
           </Link>
         </nav>
 
-        <div className="relative flex items-center bg-black/40 border border-white/20 rounded-full p-1 backdrop-blur-sm w-[240px] h-[44px] overflow-visible z-[9999]">
-          <div id="auth-group" className="relative flex items-center w-full h-full">
+        <div className="relative z-[9999] flex h-[92px] w-[190px] translate-y-2 items-center overflow-visible rounded-lg border border-cyan-300/20 bg-gradient-to-br from-[#081225]/92 via-[#0b1730]/88 to-[#06101f]/92 p-2.5 shadow-[0_14px_42px_rgba(8,47,73,0.24)] backdrop-blur-sm">
+          <div id="auth-group" className="relative isolate flex h-full w-full flex-col items-center justify-center">
             <HomeAuthGroup />
           </div>
         </div>
@@ -225,22 +228,23 @@ export default function HomePage() {
             <br />
             For Global <span className="sparkle-text">Video Content</span>
           </h1>
-          <p className="text-gray-400 max-w-2xl text-lg mb-10 relative z-10">
-            Tự động tạo và dịch phụ đề video bằng công nghệ AI tiên tiến nhất, hỗ trợ hơn
-            100 ngôn ngữ với timecode đồng bộ chính xác.
-          </p>
 
           <Link
             href="/app"
-            className="get-started-btn btn-hightech z-20 px-10 py-4 rounded-full font-bold text-sm relative"
+            className="get-started-btn btn-hightech relative z-20 mb-10 rounded-full px-10 py-4 text-sm font-bold"
           >
-            <span className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <span className="relative z-10 flex items-center gap-2">
+              <svg className="h-5 w-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               GET STARTED
             </span>
           </Link>
+
+          <p className="text-gray-400 max-w-2xl text-lg mb-10 relative z-10">
+            Tự động tạo và dịch phụ đề video bằng công nghệ AI tiên tiến nhất, hỗ trợ hơn
+            100 ngôn ngữ với timecode đồng bộ chính xác.
+          </p>
 
           <div className="spacecraft-container">
             <div className="spacecraft large-ship-left">

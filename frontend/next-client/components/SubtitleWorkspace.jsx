@@ -616,47 +616,69 @@ export default function SubtitleWorkspace() {
 
   const currentStatus = loading ? "Đang xử lý" : finalVideoUrl ? "Hoàn thành" : subtitles.length ? "Chờ xác nhận" : "Sẵn sàng";
   const currentFileName = activeTaskRef.current?.filename || selectedFile?.name || "Chưa chọn tệp";
+  const currentOutput = finalVideoUrl ? "MP4 hardsub" : srtUrl ? "SRT sẵn sàng" : "Chưa có đầu ra";
+  const activeStepIndex = finalVideoUrl ? 3 : subtitles.length ? 2 : loading ? 1 : selectedFile || currentJobId ? 0 : -1;
+  const workflowSteps = [
+    ["01", "Tải tệp", selectedFile || currentJobId ? "Đã nhận đầu vào" : "Chờ tệp mới"],
+    ["02", "Nhận diện", loading ? "AI đang chạy" : subtitles.length ? "Đã tạo phụ đề" : "Sẵn sàng"],
+    ["03", "Rà soát", subtitles.length ? `${subtitles.length} đoạn phụ đề` : "Chưa có nội dung"],
+    ["04", "Xuất bản", currentOutput],
+  ];
 
   return (
     <div
       className="min-h-screen overflow-hidden text-slate-100 selection:bg-cyan-500/30"
       style={{
         background:
-          "radial-gradient(circle at 50% 24%, rgba(26,42,94,0.72), transparent 34rem), radial-gradient(circle at 78% 14%, rgba(56,189,248,0.16), transparent 26rem), radial-gradient(circle at 16% 6%, rgba(59,130,246,0.16), transparent 24rem), linear-gradient(180deg, #0c1433 0%, #050810 66%, #000000 100%)",
+          "linear-gradient(180deg, #101827 0%, #0b1220 48%, #070b13 100%)",
       }}
     >
       <ToastStack toasts={toasts} />
 
-      <header className="relative z-30 flex h-14 items-center justify-between border-b border-cyan-400/15 bg-[#0c1433]/88 px-5 backdrop-blur-xl lg:px-8">
+      <header className="relative z-30 flex h-14 items-center justify-between border-b border-slate-700/60 bg-[#0b1220]/95 px-4 backdrop-blur-xl lg:px-6">
         <Link href="/" className="flex items-center gap-3">
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-to-br from-cyan-300 to-blue-500 text-slate-950 shadow-lg shadow-cyan-500/20">
-            <Icon name="subtitle" />
+          <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-cyan-300 to-blue-500 text-slate-950 shadow-lg shadow-cyan-500/20">
+            <Icon name="subtitle" className="h-4 w-4" />
           </span>
-          <span className="text-base font-black tracking-tight">
+          <span className="text-sm font-black tracking-tight">
             Auto<span className="text-cyan-300">Sub</span> Studio
           </span>
         </Link>
-        <div className="flex items-center gap-4">
-          <span className="hidden max-w-[260px] truncate text-sm text-slate-400 sm:block">{user?.email || "Đang đăng nhập"}</span>
-          <button className="rounded-lg border border-white/10 px-3 py-2 text-xs font-bold text-slate-300 hover:bg-white/5 hover:text-white" onClick={() => auth.signOut().then(() => router.push("/"))} type="button">
+        <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.045] p-1.5 shadow-lg shadow-black/20">
+          <span className="hidden max-w-[230px] truncate rounded-md bg-[#050810]/70 px-3 py-2 text-xs font-semibold text-slate-300 sm:block">{user?.email || "Đang đăng nhập"}</span>
+          <button className="rounded-md border border-rose-300/20 bg-rose-400/10 px-3 py-2 text-xs font-black text-rose-100 hover:bg-rose-400/15" onClick={() => auth.signOut().then(() => router.push("/"))} type="button">
             Đăng xuất
           </button>
         </div>
       </header>
 
-      <main className="grid h-[calc(100vh-56px)] grid-cols-1 overflow-hidden lg:grid-cols-[330px_minmax(0,1fr)] lg:pl-[2cm] xl:grid-cols-[350px_minmax(0,1fr)]">
-        <aside className="custom-scrollbar flex min-h-0 flex-col gap-4 overflow-y-auto border-r border-cyan-400/15 bg-[#0b1437]/88 p-4 backdrop-blur-xl">
-          <div>
+      <main className="grid h-[calc(100vh-56px)] grid-cols-1 overflow-hidden p-3 lg:grid-cols-[320px_minmax(0,1fr)] lg:gap-3 xl:grid-cols-[340px_minmax(0,1fr)]">
+        <aside className="custom-scrollbar flex min-h-0 flex-col gap-3 overflow-y-auto rounded-lg border border-slate-700/60 bg-[#0b1220]/96 p-3 shadow-2xl shadow-black/30 backdrop-blur-xl">
+          <div className="rounded-lg border border-white/10 bg-white/[0.035] p-3">
             <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-cyan-300">Thiết lập đầu vào</p>
-            <h1 className="mt-1.5 text-xl font-black tracking-tight text-white">Xử lý phụ đề</h1>
-            <p className="mt-1.5 text-xs leading-5 text-slate-400">Tải tệp, chọn ngôn ngữ nguồn và đưa job vào hàng đợi AI.</p>
+            <h1 className="mt-1 text-lg font-black tracking-tight text-white">Xử lý phụ đề</h1>
+            <p className="mt-1 text-xs leading-5 text-slate-400">Tải tệp, chọn ngôn ngữ nguồn và đưa job vào hàng đợi AI.</p>
+            <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+              <div className="rounded-md border border-white/10 bg-[#050810]/70 p-2">
+                <p className="text-sm font-black text-white">{queueItems.length}</p>
+                <p className="mt-0.5 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500">Queue</p>
+              </div>
+              <div className="rounded-md border border-white/10 bg-[#050810]/70 p-2">
+                <p className="text-sm font-black text-white">{subtitles.length}</p>
+                <p className="mt-0.5 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500">Đoạn</p>
+              </div>
+              <div className="rounded-md border border-white/10 bg-[#050810]/70 p-2">
+                <p className="text-sm font-black text-white">{currentMediaType === "audio" ? "SRT" : "MP4"}</p>
+                <p className="mt-0.5 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500">Đầu ra</p>
+              </div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 rounded-lg border border-white/10 bg-[#050810]/65 p-1">
+          <div className="grid grid-cols-2 gap-1.5 rounded-lg border border-white/10 bg-[#050810]/75 p-1">
             {Object.entries(mediaProfiles).map(([key, item]) => (
               <button
-                  className={`flex min-h-10 items-center justify-center gap-2 rounded-md text-xs font-bold transition ${
-                  mediaMode === key ? "bg-cyan-400 text-slate-950" : "text-slate-400 hover:bg-white/5 hover:text-white"
+                  className={`flex min-h-9 items-center justify-center gap-2 rounded-md text-xs font-black transition ${
+                  mediaMode === key ? "bg-cyan-300 text-slate-950 shadow-lg shadow-cyan-500/20" : "text-slate-400 hover:bg-white/5 hover:text-white"
                 }`}
                 key={key}
                 onClick={() => switchMediaMode(key)}
@@ -668,8 +690,8 @@ export default function SubtitleWorkspace() {
             ))}
           </div>
 
-          <form ref={formRef} className="grid gap-4" onSubmit={handleSubmit}>
-            <label className="group relative flex min-h-[145px] cursor-pointer items-end overflow-hidden rounded-lg border border-dashed border-cyan-400/30 bg-[#050810]/75 p-4 text-left transition hover:border-cyan-300/70 hover:bg-[#0c1433]">
+          <form ref={formRef} className="grid gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-3" onSubmit={handleSubmit}>
+            <label className="group relative flex min-h-[145px] cursor-pointer items-end overflow-hidden rounded-lg border border-dashed border-slate-500/45 bg-[#0f172a]/85 p-4 text-left transition hover:border-cyan-300/55 hover:bg-[#111c2f]">
               <input ref={fileInputRef} accept={profile.accept} className="absolute inset-0 z-20 cursor-pointer opacity-0" required type="file" onChange={handleFileChange} />
 
               {thumbnailUrl ? (
@@ -680,14 +702,14 @@ export default function SubtitleWorkspace() {
               ) : null}
 
               <span className="relative z-10 grid w-full justify-items-start gap-3">
-                <span className="grid h-10 w-10 place-items-center rounded-lg border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
-                  <Icon name="upload" />
+                <span className="grid h-10 w-10 place-items-center rounded-lg border border-cyan-300/20 bg-cyan-300/10 text-cyan-200 shadow-lg shadow-cyan-950/30">
+                  <Icon name="upload" className="h-4 w-4" />
                 </span>
                 <span>
-                  <span className="block max-w-[260px] truncate text-xs font-bold text-white">{selectedFile?.name || profile.emptyText}</span>
+                  <span className="block max-w-[270px] truncate text-xs font-black text-white">{selectedFile?.name || profile.emptyText}</span>
                   <span className="mt-1 block text-xs leading-5 text-slate-400">{profile.description}</span>
                 </span>
-                <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-cyan-300">{profile.extensions.join(" ")}</span>
+                <span className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-cyan-200">{profile.extensions.join(" ")}</span>
               </span>
             </label>
 
@@ -703,14 +725,20 @@ export default function SubtitleWorkspace() {
             </div>
 
             {mediaMode === "video" && (
-              <div className="grid grid-cols-2 gap-3">
-                <div className="grid gap-2">
-                  <label className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">Vị trí phụ đề</label>
-                  <input type="number" value={posY} onChange={(event) => setPosY(Number(event.target.value))} className="rounded-lg border-white/10 bg-[#050810] text-sm text-slate-100" />
+              <div className="grid gap-2">
+                <div className="grid gap-2 rounded-lg border border-white/10 bg-[#050810]/65 p-2.5">
+                  <div className="flex items-center justify-between gap-3">
+                    <label className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">Vị trí phụ đề</label>
+                    <span className="font-mono text-xs text-cyan-200">{posY}%</span>
+                  </div>
+                  <input max="90" min="5" type="range" value={posY} onChange={(event) => setPosY(Number(event.target.value))} className="p-0 accent-cyan-300" />
                 </div>
-                <div className="grid gap-2">
-                  <label className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">Độ mờ nền</label>
-                  <input max="1" min="0" step="0.1" type="number" value={opacity} onChange={(event) => setOpacity(Number(event.target.value))} className="rounded-lg border-white/10 bg-[#050810] text-sm text-slate-100" />
+                <div className="grid gap-2 rounded-lg border border-white/10 bg-[#050810]/65 p-2.5">
+                  <div className="flex items-center justify-between gap-3">
+                    <label className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">Độ mờ nền</label>
+                    <span className="font-mono text-xs text-cyan-200">{Math.round(opacity * 100)}%</span>
+                  </div>
+                  <input max="1" min="0" step="0.05" type="range" value={opacity} onChange={(event) => setOpacity(Number(event.target.value))} className="p-0 accent-cyan-300" />
                 </div>
               </div>
             )}
@@ -721,7 +749,7 @@ export default function SubtitleWorkspace() {
             </button>
           </form>
 
-          <div className="grid min-h-[160px] flex-1 gap-3 border-t border-white/10 pt-4">
+          <div className="grid min-h-[150px] flex-1 gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-3">
             <div className="flex items-center justify-between">
               <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400">Hàng đợi</p>
               <span className="rounded-full border border-white/10 px-2.5 py-1 text-[11px] text-slate-400">{queueItems.length} job</span>
@@ -738,13 +766,14 @@ export default function SubtitleWorkspace() {
           </div>
         </aside>
 
-        <section className="custom-scrollbar min-h-0 overflow-y-auto bg-transparent p-4 lg:overflow-hidden lg:p-5">
-          <div className="flex h-full min-h-0 flex-col gap-4">
-            <div className="flex flex-col gap-3 border-b border-white/10 pb-4 xl:flex-row xl:items-start xl:justify-between">
+        <section className="custom-scrollbar min-h-0 overflow-y-auto rounded-lg bg-[#0a101b]/55 p-3 lg:overflow-hidden">
+          <div className="flex h-full min-h-0 flex-col gap-3">
+            <div className="flex flex-col gap-3 rounded-lg border border-white/10 bg-[#0f172a]/88 p-3 shadow-2xl shadow-black/25 backdrop-blur-xl xl:flex-row xl:items-start xl:justify-between">
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className={`h-2.5 w-2.5 rounded-full ${loading ? "animate-pulse bg-cyan-300" : "bg-emerald-300"}`} />
-                  <span className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">{currentStatus}</span>
+                  <span className={`h-2.5 w-2.5 rounded-full ${loading ? "animate-pulse bg-cyan-300 shadow-lg shadow-cyan-300/50" : "bg-emerald-300"}`} />
+                  <span className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-200">{currentStatus}</span>
+                  <span className="rounded-full border border-white/10 px-2.5 py-1 text-[11px] font-bold text-slate-400">{currentMediaType === "audio" ? "Audio to SRT" : "Video to SRT/MP4"}</span>
                 </div>
                 <h2 className="mt-1.5 truncate text-xl font-black tracking-tight text-white xl:text-2xl">{currentFileName}</h2>
                 <p className="mt-1.5 max-w-4xl text-xs leading-5 text-slate-400">{message}</p>
@@ -752,13 +781,13 @@ export default function SubtitleWorkspace() {
 
               <div className="flex flex-wrap gap-2 xl:justify-end">
                 {waitingForUserAction && (
-                  <button className="rounded-lg border border-white/10 px-3 py-2 text-[11px] font-bold text-slate-100 hover:bg-white/5" onClick={continueQueue} type="button">
+                  <button className="rounded-lg border border-white/10 px-3 py-2 text-xs font-bold text-slate-100 hover:bg-white/5" onClick={continueQueue} type="button">
                     Tệp tiếp theo
                   </button>
                 )}
                 <button
                   onClick={() => setActivePanel(activePanel === "history" ? "subtitles" : "history")}
-                  className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-[11px] font-bold ${
+                  className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-bold ${
                     activePanel === "history" ? "border-cyan-300/30 bg-cyan-300/10 text-cyan-100" : "border-white/10 text-slate-200 hover:bg-white/5"
                   }`}
                   type="button"
@@ -766,16 +795,16 @@ export default function SubtitleWorkspace() {
                   <Icon name="history" className="h-4 w-4" />
                   Lịch sử
                 </button>
-                <button className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-[11px] font-bold text-slate-200 hover:bg-white/5" onClick={openArchiveModal} type="button">
+                <button className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5" onClick={openArchiveModal} type="button">
                   <Icon name="archive" className="h-4 w-4" />
                   Kho lưu trữ
                 </button>
-                <button disabled={!subtitles.length} onClick={exportSrt} className="flex items-center gap-2 rounded-lg border border-cyan-300/25 px-3 py-2 text-[11px] font-bold text-cyan-100 hover:bg-cyan-300/10 disabled:hidden" type="button">
+                <button disabled={!subtitles.length} onClick={exportSrt} className="flex items-center gap-2 rounded-lg border border-cyan-300/25 px-3 py-2 text-xs font-bold text-cyan-100 hover:bg-cyan-300/10 disabled:hidden" type="button">
                   <Icon name="download" className="h-4 w-4" />
                   Xuất SRT
                 </button>
                 {currentMediaType === "video" && (
-                  <button disabled={!subtitles.length || loading} onClick={burnVideo} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-cyan-300 to-blue-500 px-3 py-2 text-[11px] font-black text-slate-950 shadow-lg shadow-cyan-500/20 hover:brightness-110 disabled:hidden" type="button">
+                  <button disabled={!subtitles.length || loading} onClick={burnVideo} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-cyan-300 to-blue-500 px-3 py-2 text-xs font-black text-slate-950 shadow-lg shadow-cyan-500/20 hover:brightness-110 disabled:hidden" type="button">
                     <Icon name="video" className="h-4 w-4" />
                     Ép video
                   </button>
@@ -783,90 +812,115 @@ export default function SubtitleWorkspace() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-2.5 rounded-lg border border-white/10 bg-white/[0.03] p-2.5 sm:grid-cols-4">
-              {[
-                ["01", "Tải tệp", selectedFile || currentJobId ? "Đã nhận đầu vào" : "Chờ tệp mới"],
-                ["02", "Nhận diện", loading ? "Đang chạy AI" : subtitles.length ? "Đã tạo phụ đề" : "Sẵn sàng"],
-                ["03", "Rà soát", subtitles.length ? `${subtitles.length} đoạn` : "Chưa có nội dung"],
-                ["04", "Xuất bản", finalVideoUrl ? "MP4 hoàn tất" : srtUrl ? "SRT sẵn sàng" : "Chờ xử lý"],
-              ].map(([step, title, detail]) => (
-                <div className="rounded-md border border-white/10 bg-[#050810]/55 p-2.5 text-left" key={step}>
-                  <p className="text-[10px] font-black uppercase tracking-[0.16em] text-cyan-300">{step}</p>
+            <div className="grid grid-cols-1 gap-2 rounded-lg border border-white/10 bg-[#0f172a]/72 p-2 sm:grid-cols-4">
+              {workflowSteps.map(([step, title, detail], index) => (
+                <div
+                  className={`rounded-md border p-2.5 text-left transition ${
+                    index <= activeStepIndex
+                      ? "border-cyan-300/25 bg-cyan-300/10"
+                      : "border-white/10 bg-[#050810]/65"
+                  }`}
+                  key={step}
+                >
+                  <p className={`text-[10px] font-black uppercase tracking-[0.16em] ${index <= activeStepIndex ? "text-cyan-200" : "text-slate-500"}`}>{step}</p>
                   <p className="mt-1 text-xs font-bold text-white">{title}</p>
                   <p className="mt-1 truncate text-xs text-slate-500">{detail}</p>
                 </div>
               ))}
             </div>
 
-            <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[minmax(0,1fr)_380px] xl:grid-cols-[minmax(0,1fr)_420px]">
+            <div className="grid min-h-0 flex-1 gap-3 lg:grid-cols-[minmax(0,1fr)_380px] xl:grid-cols-[minmax(0,1fr)_420px]">
               <div className="flex min-w-0 flex-col gap-3">
-                <div className="relative aspect-video overflow-hidden rounded-lg border border-white/10 bg-black shadow-2xl">
-                  {currentMediaType === "audio" ? (
-                    <div className="grid h-full content-end p-6 text-left">
-                      <div className="grid max-w-xl justify-items-start gap-4">
-                        <span className="grid h-14 w-14 place-items-center rounded-lg border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
-                          <Icon name="audio" className="h-7 w-7" />
-                        </span>
-                        <div>
-                          <h3 className="text-lg font-black text-white">Bản xem trước âm thanh</h3>
-                          <p className="mt-2 text-sm text-slate-500">Audio sẽ tạo phụ đề SRT và không cần bước ép video.</p>
+                <div className="overflow-hidden rounded-lg border border-white/10 bg-[#0f172a]/90 shadow-2xl shadow-black/35">
+                  <div className="flex items-center justify-between border-b border-white/10 px-3 py-2.5">
+                    <div className="flex items-center gap-2">
+                      <span className="grid h-7 w-7 place-items-center rounded-md bg-cyan-300/10 text-cyan-200">
+                        <Icon name={currentMediaType === "audio" ? "audio" : "video"} className="h-4 w-4" />
+                      </span>
+                      <div>
+                        <p className="text-xs font-black uppercase tracking-[0.14em] text-slate-300">Preview</p>
+                        <p className="text-[11px] text-slate-500">Kiểm tra đầu vào và kết quả render</p>
+                      </div>
+                    </div>
+                    <span className="rounded-full border border-white/10 px-3 py-1 text-[11px] font-bold text-slate-400">{currentOutput}</span>
+                  </div>
+
+                  <div className="relative aspect-video overflow-hidden bg-black">
+                    {currentMediaType === "audio" ? (
+                      <div className="grid h-full content-center p-5 text-left">
+                        <div className="grid justify-items-start gap-4">
+                          <span className="grid h-12 w-12 place-items-center rounded-lg border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
+                            <Icon name="audio" className="h-6 w-6" />
+                          </span>
+                          <div>
+                            <h3 className="text-lg font-black text-white">Xử lý audio thành phụ đề SRT</h3>
+                            <p className="mt-2 max-w-xl text-xs leading-5 text-slate-500">Tệp âm thanh được nhận diện giọng nói, tách câu theo thời gian và xuất SRT để tải xuống hoặc chỉnh sửa.</p>
+                          </div>
+                          <div className="flex h-12 w-full max-w-xl items-end gap-1.5 rounded-lg border border-white/10 bg-white/[0.035] p-2.5">
+                            {[38, 64, 46, 78, 55, 88, 42, 72, 50, 82, 58, 68, 44, 74, 52, 62].map((height, index) => (
+                              <span className="flex-1 rounded-t bg-cyan-300/70" key={index} style={{ height: `${height}%` }} />
+                            ))}
+                          </div>
+                          {previewUrl && <audio controls src={previewUrl} className="w-full max-w-xl" />}
                         </div>
-                        {previewUrl && <audio controls src={previewUrl} className="w-full" />}
                       </div>
-                    </div>
-                  ) : previewUrl ? (
-                    <video controls src={previewUrl} className="h-full w-full object-contain" />
-                  ) : (
-                    <div className="grid h-full content-end p-6 text-left">
-                      <div className="grid max-w-sm justify-items-start gap-4 text-slate-500">
-                        <Icon name="video" className="h-12 w-12" />
-                        <p className="text-sm font-semibold">Chọn video để xem trước và bắt đầu tạo phụ đề.</p>
+                    ) : previewUrl ? (
+                      <video controls src={previewUrl} className="h-full w-full object-contain" />
+                    ) : (
+                      <div className="grid h-full content-center p-6 text-left">
+                        <div className="grid max-w-md justify-items-start gap-4 text-slate-500">
+                          <Icon name="video" className="h-12 w-12" />
+                          <div>
+                            <h3 className="text-lg font-black text-white">Chưa có video xem trước</h3>
+                            <p className="mt-2 text-sm leading-6">Chọn video MP4 ở cột bên trái để bắt đầu tạo phụ đề và xem lại kết quả tại đây.</p>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {loading && (
-                    <div className="absolute inset-0 z-20 grid place-items-center bg-[#050810]/90 p-5 backdrop-blur-md">
-                      <div className="grid justify-items-center gap-4 text-center">
-                        <span className="h-10 w-10 animate-spin rounded-full border-4 border-cyan-300 border-t-transparent" />
-                        <span className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-200">AI đang nhận diện giọng nói và xử lý phụ đề</span>
+                    {loading && (
+                      <div className="absolute inset-0 z-20 grid place-items-center bg-[#050810]/90 p-5 backdrop-blur-md">
+                        <div className="grid justify-items-center gap-4 text-center">
+                          <span className="h-10 w-10 animate-spin rounded-full border-4 border-cyan-300 border-t-transparent" />
+                          <span className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-200">AI đang nhận diện giọng nói và xử lý phụ đề</span>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
 
-                <div className="grid gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-3 text-left sm:grid-cols-3">
-                  <div>
-                    <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Job hiện tại</p>
-                    <p className="mt-1 truncate font-mono text-xs text-slate-300">{currentJobId || "Chưa có"}</p>
-                  </div>
-                  <div>
-                    <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Phân đoạn</p>
-                    <p className="mt-1 text-sm font-bold text-white">{subtitles.length} đoạn phụ đề</p>
-                  </div>
-                  <div>
-                    <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Đầu ra</p>
-                    <p className="mt-1 text-sm font-bold text-white">{finalVideoUrl ? "MP4 hardsub" : srtUrl ? "SRT sẵn sàng" : "Đang chờ"}</p>
+                  <div className="grid gap-2 p-2.5 text-left sm:grid-cols-3">
+                    <div className="rounded-md border border-white/10 bg-[#050810]/65 p-2.5">
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Job hiện tại</p>
+                      <p className="mt-1 truncate font-mono text-xs text-slate-300">{currentJobId || "Chưa có"}</p>
+                    </div>
+                    <div className="rounded-md border border-white/10 bg-[#050810]/65 p-2.5">
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Phân đoạn</p>
+                      <p className="mt-1 text-sm font-bold text-white">{subtitles.length} đoạn phụ đề</p>
+                    </div>
+                    <div className="rounded-md border border-white/10 bg-[#050810]/65 p-2.5">
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Đầu ra</p>
+                      <p className="mt-1 text-sm font-bold text-white">{currentOutput}</p>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="flex min-h-[430px] flex-col overflow-hidden rounded-lg border border-cyan-400/15 bg-[#0b1437]/82 shadow-2xl backdrop-blur-xl lg:min-h-0">
+              <div className="flex min-h-[390px] flex-col overflow-hidden rounded-lg border border-white/10 bg-[#0f172a]/92 shadow-2xl shadow-black/35 backdrop-blur-xl lg:min-h-0">
                 {activePanel === "history" ? (
                   <HistoryList history={history} message={historyMessage} onRefresh={loadHistory} />
                 ) : (
                   <>
-                    <div className="flex items-center justify-between border-b border-white/10 bg-[#050810]/65 p-4">
+                    <div className="flex items-center justify-between border-b border-white/10 bg-[#050810]/72 p-3">
                       <div>
-                        <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-200">Biên tập phụ đề</p>
+                        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-200">Biên tập phụ đề</p>
                         <p className="mt-1 text-xs text-slate-500">Rà soát từng đoạn trước khi xuất hoặc render.</p>
                       </div>
-                      <span className="rounded-full border border-white/10 px-3 py-1 text-xs font-bold text-slate-300">
+                      <span className="rounded-full border border-white/10 bg-white/[0.035] px-3 py-1 text-xs font-bold text-slate-300">
                         {finalVideoUrl ? "Xong" : subtitles.length}
                       </span>
                     </div>
 
-                    <div className="custom-scrollbar flex-1 space-y-3 overflow-y-auto p-4">
+                    <div className="custom-scrollbar flex-1 space-y-2.5 overflow-y-auto p-3">
                       {finalVideoUrl ? (
                         <div className="grid justify-items-start gap-4 rounded-lg border border-emerald-400/20 bg-emerald-400/10 p-6 text-left">
                           <span className="grid h-14 w-14 place-items-center rounded-full bg-emerald-400/20 text-emerald-200">
@@ -881,10 +935,13 @@ export default function SubtitleWorkspace() {
                           </a>
                         </div>
                       ) : subtitles.length === 0 ? (
-                        <div className="grid h-full min-h-[300px] content-end p-5 text-left text-slate-600">
-                          <div className="grid justify-items-start gap-3">
-                            <Icon name="subtitle" className="h-12 w-12" />
-                            <p className="text-xs font-bold uppercase tracking-[0.18em]">Chưa có phụ đề</p>
+                        <div className="grid h-full min-h-[300px] place-items-center rounded-lg border border-dashed border-white/10 bg-[#050810]/45 p-6 text-center text-slate-500">
+                          <div className="grid max-w-xs justify-items-center gap-3">
+                            <span className="grid h-14 w-14 place-items-center rounded-lg border border-white/10 bg-white/[0.035]">
+                              <Icon name="subtitle" className="h-7 w-7" />
+                            </span>
+                            <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Chưa có phụ đề</p>
+                            <p className="text-sm leading-6">Sau khi AI xử lý xong, từng câu phụ đề sẽ xuất hiện ở đây để chỉnh sửa nhanh.</p>
                           </div>
                         </div>
                       ) : (
@@ -896,14 +953,14 @@ export default function SubtitleWorkspace() {
                             </a>
                           )}
                           {subtitles.map((sub, index) => (
-                            <div className="rounded-lg border border-white/10 bg-white/[0.035] p-3 transition hover:border-cyan-300/25" key={`${sub.start}-${index}`}>
-                              <div className="mb-3 flex items-center justify-between gap-3">
+                            <div className="rounded-lg border border-white/10 bg-white/[0.035] p-2.5 transition hover:border-cyan-300/25 hover:bg-white/[0.055]" key={`${sub.start}-${index}`}>
+                              <div className="mb-2.5 flex items-center justify-between gap-3">
                                 <span className="rounded-md border border-white/10 bg-[#050810] px-2 py-1 font-mono text-[11px] text-cyan-200">
                                   {sub.start} - {sub.end}
                                 </span>
-                                <span className="text-[11px] font-bold uppercase text-slate-500">#{index + 1}</span>
+                                <span className="rounded-full border border-white/10 px-2.5 py-1 text-[11px] font-bold uppercase text-slate-500">#{index + 1}</span>
                               </div>
-                              <textarea className="custom-scrollbar min-h-[74px] w-full resize-y rounded-lg border-white/10 bg-[#050810]/75 p-3 text-xs leading-5 text-slate-200 focus:border-cyan-300/60" value={sub.text} onChange={(event) => updateSubtitle(index, event.target.value)} />
+                              <textarea className="custom-scrollbar min-h-[72px] w-full resize-y rounded-lg border-white/10 bg-[#050810]/78 p-3 text-xs leading-5 text-slate-100 focus:border-cyan-300/60" value={sub.text} onChange={(event) => updateSubtitle(index, event.target.value)} />
                             </div>
                           ))}
                         </>
