@@ -5,6 +5,9 @@ backend/uploads/
 .env
 __pycache__/
 *.pyc
+*.doc
+*.docx
+~$*.docx
 logs/
 node_modules/
 frontend/react-client/dist/
