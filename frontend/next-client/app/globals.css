@@ -1212,9 +1212,165 @@ body {
 
 .nav-links a {
   position: relative;
+  z-index: 1;
   transition:
     transform 0.3s ease,
     color 0.3s ease;
+}
+
+.nav-orbit-light {
+  animation: nav-orbit 8s linear infinite;
+  background: #a5f3fc;
+  border-radius: 999px;
+  box-shadow:
+    0 0 5px #67e8f9,
+    0 0 12px rgba(34, 211, 238, 0.95),
+    0 0 20px rgba(59, 130, 246, 0.7);
+  height: 5px;
+  left: 0;
+  offset-path: inset(1px round 999px);
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 5px;
+}
+
+@keyframes nav-orbit {
+  to {
+    offset-distance: 100%;
+  }
+}
+
+.auth-z-frame {
+  position: relative;
+}
+
+.subtitle-preview-frame:fullscreen {
+  aspect-ratio: auto;
+  height: 100vh;
+  width: 100vw;
+}
+
+.subtitle-preview-frame:-webkit-full-screen {
+  aspect-ratio: auto;
+  height: 100vh;
+  width: 100vw;
+}
+
+.subtitle-preview-expanded {
+  aspect-ratio: auto;
+  height: 100vh;
+  inset: 0;
+  position: fixed;
+  width: 100vw;
+  z-index: 10000;
+}
+
+.subtitle-customization {
+  transition: width 0.2s ease;
+  width: 100%;
+}
+
+.subtitle-customization[open] {
+  width: 100%;
+}
+
+.studio-status-dot {
+  animation: studio-status-blink 1.7s ease-in-out infinite;
+  box-shadow: 0 0 8px currentColor;
+}
+
+@keyframes studio-status-blink {
+  0%,
+  100% {
+    opacity: 0.48;
+    transform: scale(0.82);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+.studio-process-button {
+  background: linear-gradient(135deg, #a5f3fc 0%, #67e8f9 46%, #38bdf8 100%);
+  border: 1px solid rgba(207, 250, 254, 0.86);
+  box-shadow:
+    0 7px 20px rgba(34, 211, 238, 0.2),
+    0 0 18px rgba(103, 232, 249, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.64);
+}
+
+.studio-process-button:hover,
+.studio-process-button:focus-visible {
+  box-shadow:
+    0 10px 25px rgba(34, 211, 238, 0.3),
+    0 0 24px rgba(103, 232, 249, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.studio-process-shine {
+  animation: studio-process-shine 3.8s ease-in-out infinite;
+  background: linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.58) 50%, transparent 80%);
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(-135%);
+}
+
+@keyframes studio-process-shine {
+  0%,
+  58% {
+    transform: translateX(-135%);
+  }
+
+  82%,
+  100% {
+    transform: translateX(135%);
+  }
+}
+
+.auth-z-frame a {
+  position: relative;
+  z-index: 1;
+}
+
+.auth-z-stroke {
+  height: 48px;
+  left: -8px;
+  overflow: visible;
+  pointer-events: none;
+  position: absolute;
+  top: -7px;
+  width: 208px;
+}
+
+.auth-z-line,
+.auth-z-light {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.auth-z-line {
+  filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.72));
+  opacity: 0.88;
+  stroke: #67e8f9;
+  stroke-width: 1.4;
+}
+
+.auth-z-light {
+  animation: auth-z-light-run 3.6s linear infinite;
+  filter: drop-shadow(0 0 7px rgba(165, 243, 252, 0.98));
+  stroke: #ecfeff;
+  stroke-dasharray: 10 250;
+  stroke-width: 2;
+}
+
+@keyframes auth-z-light-run {
+  to {
+    stroke-dashoffset: -260;
+  }
 }
 
 .nav-links a:hover {

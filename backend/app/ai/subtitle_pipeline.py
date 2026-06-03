@@ -3,11 +3,29 @@ import whisper
 import ffmpeg
 import os
 import re
+from threading import Lock
 
-from .nllb_handler import translate_to_vietnamese
+import torch
+
+from .nllb_handler import translate_batch_to_vietnamese
 from .srt_generator import generate_srt
 from .llm_refiner import refine_subtitle_with_gemini
 from .video_burner import burn_subtitles_hardsub
+
+_whisper_models = {}
+_whisper_lock = Lock()
+
+
+def get_whisper_model(model_name: str):
+    """Load each Whisper model once and reuse it for later jobs."""
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    cache_key = (model_name, device)
+    with _whisper_lock:
+        if cache_key not in _whisper_models:
+            print(f"Loading Whisper {model_name} on {device}...")
+            _whisper_models[cache_key] = whisper.load_model(model_name, device=device)
+        return _whisper_models[cache_key], device
+
 
 def parse_srt_to_list(srt_string: str) -> list:
     """
@@ -56,8 +74,13 @@ def extract_subtitles_from_video(input_path: str, src_language: str, whisper_mod
 
     # 2. Nhận diện giọng nói
     print("2. Đang nhận diện giọng nói (Whisper)...")
-    model = whisper.load_model(whisper_model)
-    result = model.transcribe(audio_path, language=src_language, verbose=False)
+    model, whisper_device = get_whisper_model(whisper_model)
+    result = model.transcribe(
+        audio_path,
+        language=src_language,
+        verbose=False,
+        fp16=whisper_device == "cuda",
+    )
 
     # 3. Dịch thuật thô bằng NLLB
     print("3. Đang dịch thô sang tiếng Việt...")
@@ -68,14 +91,23 @@ def extract_subtitles_from_video(input_path: str, src_language: str, whisper_mod
     }
     nllb_src = lang_map.get(src_language, 'eng_Latn')
 
+    segments = result["segments"]
+    batch_size = max(1, int(os.getenv("NLLB_BATCH_SIZE", "8")))
     translated_segments = []
-    for seg in result['segments']:
-        vi_text = translate_to_vietnamese(seg['text'], nllb_src)
-        translated_segments.append({
-            'start': seg['start'],
-            'end': seg['end'],
-            'text': vi_text
-        })
+    for start in range(0, len(segments), batch_size):
+        batch = segments[start:start + batch_size]
+        translated_texts = translate_batch_to_vietnamese(
+            [seg["text"] for seg in batch],
+            nllb_src,
+        )
+        translated_segments.extend(
+            {
+                "start": seg["start"],
+                "end": seg["end"],
+                "text": translated_text,
+            }
+            for seg, translated_text in zip(batch, translated_texts)
+        )
 
     # 4. Tạo SRT thô
     print("4. Đang tạo định dạng SRT thô...")
@@ -100,7 +132,16 @@ def extract_subtitles_from_video(input_path: str, src_language: str, whisper_mod
 # ====================================================
 # GIAI ĐOẠN 2: ÉP PHỤ ĐỀ (ĐÃ QUA CHỈNH SỬA) VÀO VIDEO
 # ====================================================
-def burn_subtitles_to_video(input_path: str, subtitles_list: list, pos_y: int, opacity: float) -> str:
+def burn_subtitles_to_video(
+    input_path: str,
+    subtitles_list: list,
+    pos_y: int,
+    opacity: float,
+    background_color: str,
+    text_color: str,
+    font_size: int,
+    font_family: str,
+) -> str:
     """Pipeline Giai đoạn 2: Nhận list phụ đề (từ Frontend) -> Tạo file SRT tạm -> Gọi FFmpeg ép vào Video"""
     print(f"Bắt đầu ép phụ đề (Hardsub) cho file: {input_path}")
     
@@ -120,7 +161,16 @@ def burn_subtitles_to_video(input_path: str, subtitles_list: list, pos_y: int, o
 
     # 2. Gọi FFmpeg "đốt" phụ đề vào video (gọi class video_burner của bạn)
     print("Đang chạy tiến trình FFmpeg Render...")
-    final_video_path = burn_subtitles_hardsub(input_path, temp_srt_path, pos_y, opacity)
+    final_video_path = burn_subtitles_hardsub(
+        input_path,
+        temp_srt_path,
+        pos_y,
+        opacity,
+        background_color,
+        text_color,
+        font_size,
+        font_family,
+    )
     
     # 3. Dọn dẹp file SRT tạm sau khi ép xong
     if os.path.exists(temp_srt_path):

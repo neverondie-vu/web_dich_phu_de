@@ -8,11 +8,10 @@ import { apiFetch, makeBackendUrl } from "../lib/api";
 import { auth } from "../lib/firebase";
 
 const languages = [
-  ["en", "Tiếng Anh"],
-  ["zh", "Tiếng Trung"],
-  ["ko", "Tiếng Hàn"],
-  ["ja", "Tiếng Nhật"],
-  ["vi", "Tiếng Việt"],
+  ["en", "Tiếng Anh", "EN"],
+  ["zh", "Tiếng Trung", "ZH"],
+  ["ko", "Tiếng Hàn", "KO"],
+  ["ja", "Tiếng Nhật", "JA"],
 ];
 
 const mediaProfiles = {
@@ -47,6 +46,36 @@ const statusMeta = {
   saved: ["Đã lưu", "border-emerald-400/25 bg-emerald-400/10 text-emerald-200"],
 };
 
+const subtitleColorPresets = [
+  "#000000",
+  "#ffffff",
+  "#ef4444",
+  "#f97316",
+  "#eab308",
+  "#22c55e",
+  "#06b6d4",
+  "#3b82f6",
+  "#a855f7",
+  "#ec4899",
+];
+
+const subtitleFonts = [
+  ["Arial", "Arial"],
+  ["Tahoma", "Tahoma"],
+  ["Verdana", "Verdana"],
+  ["Times New Roman", "Times New Roman"],
+  ["Georgia", "Georgia"],
+  ["Courier New", "Courier New"],
+];
+
+function hexToRgba(hex, opacity) {
+  const value = hex.replace("#", "");
+  const red = parseInt(value.slice(0, 2), 16);
+  const green = parseInt(value.slice(2, 4), 16);
+  const blue = parseInt(value.slice(4, 6), 16);
+  return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
+}
+
 function toSrt(subtitles, jobId) {
   return {
     filename: `subtitle_${jobId || "export"}.srt`,
@@ -58,6 +87,14 @@ function toSrt(subtitles, jobId) {
       })
       .join("\n\n"),
   };
+}
+
+function subtitleTimeToSeconds(value) {
+  const [hours = 0, minutes = 0, seconds = 0] = String(value || "")
+    .replace(",", ".")
+    .split(":")
+    .map(Number);
+  return hours * 3600 + minutes * 60 + seconds;
 }
 
 function fileExtension(name) {
@@ -119,7 +156,7 @@ function QueueItem({ item }) {
               ? "w-full bg-emerald-400"
               : item.status === "failed"
                 ? "w-full bg-rose-400"
-                : "w-1/3 bg-gradient-to-r from-cyan-400 to-blue-500"
+                : "w-1/3 bg-linear-to-r from-cyan-400 to-blue-500"
           }`}
         />
       </div>
@@ -129,7 +166,7 @@ function QueueItem({ item }) {
 
 function ToastStack({ toasts }) {
   return (
-    <div className="pointer-events-none fixed right-5 top-5 z-[10000] flex w-[360px] max-w-[calc(100vw-32px)] flex-col gap-3">
+    <div className="pointer-events-none fixed right-5 top-5 z-10000 flex w-90 max-w-[calc(100vw-32px)] flex-col gap-3">
       {toasts.map((toast) => (
         <div
           className={`rounded-lg border px-4 py-3 shadow-2xl backdrop-blur-xl ${
@@ -198,6 +235,10 @@ export default function SubtitleWorkspace() {
   const activeTaskRef = useRef(null);
   const subtitlesRef = useRef([]);
   const pollRef = useRef(null);
+  const profileMenuRef = useRef(null);
+  const previewFrameRef = useRef(null);
+  const subtitleCustomizationRef = useRef(null);
+  const languageMenuRef = useRef(null);
 
   const [authChecked, setAuthChecked] = useState(false);
   const [user, setUser] = useState(null);
@@ -206,9 +247,14 @@ export default function SubtitleWorkspace() {
   const [sourceLanguage, setSourceLanguage] = useState("en");
   const [posY, setPosY] = useState(20);
   const [opacity, setOpacity] = useState(0.8);
+  const [backgroundColor, setBackgroundColor] = useState("#000000");
+  const [textColor, setTextColor] = useState("#ffffff");
+  const [fontSize, setFontSize] = useState(24);
+  const [fontFamily, setFontFamily] = useState("Arial");
   const [selectedFile, setSelectedFile] = useState(null);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
+  const [previewCurrentTime, setPreviewCurrentTime] = useState(0);
   const [queueItems, setQueueItems] = useState([]);
   const [currentJobId, setCurrentJobId] = useState("");
   const [subtitles, setSubtitles] = useState([]);
@@ -224,6 +270,9 @@ export default function SubtitleWorkspace() {
   const [srtUrl, setSrtUrl] = useState("");
   const [waitingForUserAction, setWaitingForUserAction] = useState(false);
   const [toasts, setToasts] = useState([]);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [previewExpanded, setPreviewExpanded] = useState(false);
+  const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
 
   const profile = mediaProfiles[mediaMode];
 
@@ -243,8 +292,71 @@ export default function SubtitleWorkspace() {
   }, [authChecked, router, user]);
 
   useEffect(() => {
+    function closeProfileMenu(event) {
+      if (event.key === "Escape") setProfileMenuOpen(false);
+      if (event.type === "mousedown" && !profileMenuRef.current?.contains(event.target)) {
+        setProfileMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", closeProfileMenu);
+    document.addEventListener("keydown", closeProfileMenu);
+    return () => {
+      document.removeEventListener("mousedown", closeProfileMenu);
+      document.removeEventListener("keydown", closeProfileMenu);
+    };
+  }, []);
+
+  useEffect(() => {
+    function closeSubtitleCustomization(event) {
+      const details = subtitleCustomizationRef.current;
+      if (!details?.open) return;
+      if (event.key === "Escape" || (event.type === "mousedown" && !details.contains(event.target))) {
+        details.open = false;
+      }
+    }
+
+    document.addEventListener("mousedown", closeSubtitleCustomization);
+    document.addEventListener("keydown", closeSubtitleCustomization);
+    return () => {
+      document.removeEventListener("mousedown", closeSubtitleCustomization);
+      document.removeEventListener("keydown", closeSubtitleCustomization);
+    };
+  }, []);
+
+  useEffect(() => {
+    function closeLanguageMenu(event) {
+      if (event.key === "Escape") setLanguageMenuOpen(false);
+      if (event.type === "mousedown" && !languageMenuRef.current?.contains(event.target)) {
+        setLanguageMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", closeLanguageMenu);
+    document.addEventListener("keydown", closeLanguageMenu);
+    return () => {
+      document.removeEventListener("mousedown", closeLanguageMenu);
+      document.removeEventListener("keydown", closeLanguageMenu);
+    };
+  }, []);
+
+  useEffect(() => {
     if (user?.uid) loadHistory();
   }, [user?.uid]);
+
+  useEffect(() => {
+    function syncPreviewFullscreen() {
+      const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+      if (!fullscreenElement) setPreviewExpanded(false);
+    }
+
+    document.addEventListener("fullscreenchange", syncPreviewFullscreen);
+    document.addEventListener("webkitfullscreenchange", syncPreviewFullscreen);
+    return () => {
+      document.removeEventListener("fullscreenchange", syncPreviewFullscreen);
+      document.removeEventListener("webkitfullscreenchange", syncPreviewFullscreen);
+    };
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -260,6 +372,47 @@ export default function SubtitleWorkspace() {
     window.setTimeout(() => {
       setToasts((items) => items.filter((item) => item.id !== id));
     }, 4200);
+  }
+
+  async function handleLogout() {
+    setProfileMenuOpen(false);
+    await auth.signOut();
+    router.push("/");
+  }
+
+  async function openPreviewFullscreen() {
+    const frame = previewFrameRef.current;
+    if (!frame) return;
+
+    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+    if (fullscreenElement) {
+      if (document.exitFullscreen) {
+        await document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+      setPreviewExpanded(false);
+      return;
+    }
+
+    if (previewExpanded) {
+      setPreviewExpanded(false);
+      return;
+    }
+
+    try {
+      if (frame.requestFullscreen) {
+        await frame.requestFullscreen();
+        setPreviewExpanded(true);
+      } else if (frame.webkitRequestFullscreen) {
+        frame.webkitRequestFullscreen();
+        setPreviewExpanded(true);
+      } else {
+        setPreviewExpanded(true);
+      }
+    } catch {
+      setPreviewExpanded(true);
+    }
   }
 
   function resetSelectedFile() {
@@ -513,7 +666,16 @@ export default function SubtitleWorkspace() {
       const data = await apiFetch("/api/burn", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ job_id: currentJobId, subtitles: subtitlesRef.current }),
+        body: JSON.stringify({
+          job_id: currentJobId,
+          subtitles: subtitlesRef.current,
+          subtitle_position_y: posY,
+          background_opacity: opacity,
+          background_color: backgroundColor,
+          text_color: textColor,
+          font_size: fontSize,
+          font_family: fontFamily,
+        }),
       });
 
       await loadHistory();
@@ -618,12 +780,21 @@ export default function SubtitleWorkspace() {
   const currentFileName = activeTaskRef.current?.filename || selectedFile?.name || "Chưa chọn tệp";
   const currentOutput = finalVideoUrl ? "MP4 hardsub" : srtUrl ? "SRT sẵn sàng" : "Chưa có đầu ra";
   const activeStepIndex = finalVideoUrl ? 3 : subtitles.length ? 2 : loading ? 1 : selectedFile || currentJobId ? 0 : -1;
+  const previewSubtitle =
+    subtitles.find(
+      (subtitle) =>
+        previewCurrentTime >= subtitleTimeToSeconds(subtitle.start) &&
+        previewCurrentTime <= subtitleTimeToSeconds(subtitle.end),
+    ) || subtitles[0];
   const workflowSteps = [
     ["01", "Tải tệp", selectedFile || currentJobId ? "Đã nhận đầu vào" : "Chờ tệp mới"],
     ["02", "Nhận diện", loading ? "AI đang chạy" : subtitles.length ? "Đã tạo phụ đề" : "Sẵn sàng"],
     ["03", "Rà soát", subtitles.length ? `${subtitles.length} đoạn phụ đề` : "Chưa có nội dung"],
     ["04", "Xuất bản", currentOutput],
   ];
+  const displayName = user?.displayName || user?.email?.split("@")[0] || "User";
+  const initial = displayName.charAt(0).toUpperCase();
+  const selectedLanguage = languages.find(([value]) => value === sourceLanguage) || languages[0];
 
   return (
     <div
@@ -636,19 +807,47 @@ export default function SubtitleWorkspace() {
       <ToastStack toasts={toasts} />
 
       <header className="relative z-30 flex h-14 items-center justify-between border-b border-slate-700/60 bg-[#0b1220]/95 px-4 backdrop-blur-xl lg:px-6">
-        <Link href="/" className="flex items-center gap-3">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-cyan-300 to-blue-500 text-slate-950 shadow-lg shadow-cyan-500/20">
+        <Link href="/" className="ml-5 flex items-center gap-3">
+          <span className="grid h-8 w-8 place-items-center rounded-lg bg-linear-to-br from-cyan-300 to-blue-500 text-slate-950 shadow-lg shadow-cyan-500/20">
             <Icon name="subtitle" className="h-4 w-4" />
           </span>
-          <span className="text-sm font-black tracking-tight">
+          <span className="text-base font-black tracking-tight">
             Auto<span className="text-cyan-300">Sub</span> Studio
           </span>
         </Link>
-        <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.045] p-1.5 shadow-lg shadow-black/20">
-          <span className="hidden max-w-[230px] truncate rounded-md bg-[#050810]/70 px-3 py-2 text-xs font-semibold text-slate-300 sm:block">{user?.email || "Đang đăng nhập"}</span>
-          <button className="rounded-md border border-rose-300/20 bg-rose-400/10 px-3 py-2 text-xs font-black text-rose-100 hover:bg-rose-400/15" onClick={() => auth.signOut().then(() => router.push("/"))} type="button">
-            Đăng xuất
+        <div className="relative" ref={profileMenuRef}>
+          <button
+            aria-expanded={profileMenuOpen}
+            aria-haspopup="menu"
+            className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/4.5 px-2 py-1.5 text-left shadow-lg shadow-black/20 transition hover:border-cyan-300/20 hover:bg-white/7 focus:border-cyan-300/20 focus:bg-white/7 focus:outline-none"
+            onClick={() => setProfileMenuOpen((open) => !open)}
+            type="button"
+          >
+            <span className="flex h-7 w-7 shrink-0 rounded-full bg-linear-to-br from-cyan-200 via-blue-400 to-violet-400 p-px">
+              <span className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-[#081225] text-[10px] font-black text-cyan-100">
+                {user?.photoURL ? <img alt={displayName} className="h-full w-full rounded-full object-cover" src={user.photoURL} /> : initial}
+              </span>
+            </span>
+            <span className="hidden max-w-36 truncate text-xs font-bold text-cyan-100 sm:block">Hi, {displayName}</span>
+            <svg className={`h-2.5 w-2.5 text-slate-500 transition-transform ${profileMenuOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+            </svg>
           </button>
+
+          <div className={`absolute right-0 top-full z-50 mt-2 w-40 origin-top-right rounded-lg border border-white/10 bg-[#07111f]/96 p-1.5 shadow-[0_16px_38px_rgba(0,0,0,0.42)] backdrop-blur-xl transition duration-200 ${profileMenuOpen ? "visible translate-y-0 scale-100 opacity-100" : "invisible -translate-y-1 scale-95 opacity-0"}`} role="menu">
+            <Link className="flex items-center gap-2 rounded-md px-2.5 py-2 text-sm font-bold text-cyan-100 transition hover:bg-cyan-300/10 hover:text-white" href="/" onClick={() => setProfileMenuOpen(false)} role="menuitem">
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M3 11.5 12 4l9 7.5M5.5 10v9h13v-9M9 19v-5h6v5" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+              </svg>
+              Về trang chủ
+            </Link>
+            <button className="flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left text-sm font-bold text-rose-200 transition hover:bg-rose-300/10 hover:text-rose-100" onClick={handleLogout} role="menuitem" type="button">
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M17 16l4-4m0 0-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+              </svg>
+              Đăng xuất
+            </button>
+          </div>
         </div>
       </header>
 
@@ -691,7 +890,7 @@ export default function SubtitleWorkspace() {
           </div>
 
           <form ref={formRef} className="grid gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-3" onSubmit={handleSubmit}>
-            <label className="group relative flex min-h-[145px] cursor-pointer items-end overflow-hidden rounded-lg border border-dashed border-slate-500/45 bg-[#0f172a]/85 p-4 text-left transition hover:border-cyan-300/55 hover:bg-[#111c2f]">
+            <label className="group relative flex min-h-36.25 cursor-pointer items-end overflow-hidden rounded-lg border border-dashed border-slate-500/45 bg-[#0f172a]/85 p-4 text-left transition hover:border-cyan-300/55 hover:bg-[#111c2f]">
               <input ref={fileInputRef} accept={profile.accept} className="absolute inset-0 z-20 cursor-pointer opacity-0" required type="file" onChange={handleFileChange} />
 
               {thumbnailUrl ? (
@@ -706,7 +905,7 @@ export default function SubtitleWorkspace() {
                   <Icon name="upload" className="h-4 w-4" />
                 </span>
                 <span>
-                  <span className="block max-w-[270px] truncate text-xs font-black text-white">{selectedFile?.name || profile.emptyText}</span>
+                  <span className="block max-w-67.5 truncate text-xs font-black text-white">{selectedFile?.name || profile.emptyText}</span>
                   <span className="mt-1 block text-xs leading-5 text-slate-400">{profile.description}</span>
                 </span>
                 <span className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-cyan-200">{profile.extensions.join(" ")}</span>
@@ -715,41 +914,120 @@ export default function SubtitleWorkspace() {
 
             <div className="grid gap-2">
               <label className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">Ngôn ngữ nguồn</label>
-              <select value={sourceLanguage} onChange={(event) => setSourceLanguage(event.target.value)} className="rounded-lg border-white/10 bg-[#050810] text-sm text-slate-100">
-                {languages.map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </select>
+              <div className="relative" ref={languageMenuRef}>
+                <button
+                  aria-expanded={languageMenuOpen}
+                  aria-haspopup="listbox"
+                  className="flex w-full items-center gap-3 rounded-lg border border-white/10 bg-[#050810] px-3 py-2.5 text-left shadow-inner shadow-black/20 transition hover:border-cyan-300/35 hover:bg-[#081225] focus:border-cyan-300/45 focus:outline-none focus:ring-2 focus:ring-cyan-300/10"
+                  onClick={() => setLanguageMenuOpen((open) => !open)}
+                  type="button"
+                >
+                  <span className="grid h-7 w-8 shrink-0 place-items-center rounded-md border border-cyan-300/20 bg-cyan-300/10 text-[10px] font-black tracking-wide text-cyan-200">{selectedLanguage[2]}</span>
+                  <span className="min-w-0 flex-1 truncate text-sm font-bold text-slate-100">{selectedLanguage[1]}</span>
+                  <svg className={`h-3.5 w-3.5 text-slate-500 transition-transform ${languageMenuOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                  </svg>
+                </button>
+
+                <div className={`absolute inset-x-0 top-full z-40 mt-1.5 origin-top overflow-hidden rounded-lg border border-white/10 bg-[#07111f]/98 p-1.5 shadow-[0_14px_34px_rgba(0,0,0,0.42)] backdrop-blur-xl transition duration-200 ${languageMenuOpen ? "visible translate-y-0 scale-100 opacity-100" : "invisible -translate-y-1 scale-95 opacity-0"}`} role="listbox">
+                  {languages.map(([value, label, code]) => (
+                    <button
+                      aria-selected={sourceLanguage === value}
+                      className={`flex w-full items-center gap-3 rounded-md px-2 py-2 text-left transition ${sourceLanguage === value ? "bg-cyan-300/12 text-cyan-100" : "text-slate-300 hover:bg-white/6 hover:text-white"}`}
+                      key={value}
+                      onClick={() => {
+                        setSourceLanguage(value);
+                        setLanguageMenuOpen(false);
+                      }}
+                      role="option"
+                      type="button"
+                    >
+                      <span className="grid h-6 w-8 place-items-center rounded border border-cyan-300/15 bg-cyan-300/8 text-[10px] font-black tracking-wide text-cyan-200">{code}</span>
+                      <span className="flex-1 text-xs font-bold">{label}</span>
+                      {sourceLanguage === value && <Icon name="check" className="h-3.5 w-3.5 text-cyan-200" />}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {mediaMode === "video" && (
               <div className="grid gap-2">
-                <div className="grid gap-2 rounded-lg border border-white/10 bg-[#050810]/65 p-2.5">
+                <div className="grid min-h-18 content-center gap-2 rounded-lg border border-white/10 bg-[#050810]/65 p-2">
                   <div className="flex items-center justify-between gap-3">
                     <label className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">Vị trí phụ đề</label>
-                    <span className="font-mono text-xs text-cyan-200">{posY}%</span>
+                    <span className="font-mono text-xs text-cyan-200">{posY}px</span>
                   </div>
-                  <input max="90" min="5" type="range" value={posY} onChange={(event) => setPosY(Number(event.target.value))} className="p-0 accent-cyan-300" />
+                  <input max="500" min="5" type="range" value={posY} onChange={(event) => setPosY(Number(event.target.value))} className="p-0 accent-cyan-300" />
                 </div>
-                <div className="grid gap-2 rounded-lg border border-white/10 bg-[#050810]/65 p-2.5">
+                <div className="grid min-h-18 content-center gap-2 rounded-lg border border-white/10 bg-[#050810]/65 p-2">
                   <div className="flex items-center justify-between gap-3">
                     <label className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">Độ mờ nền</label>
                     <span className="font-mono text-xs text-cyan-200">{Math.round(opacity * 100)}%</span>
                   </div>
                   <input max="1" min="0" step="0.05" type="range" value={opacity} onChange={(event) => setOpacity(Number(event.target.value))} className="p-0 accent-cyan-300" />
                 </div>
+                <details className="subtitle-customization group rounded-lg border border-white/10 bg-[#050810]/65 p-2.5" ref={subtitleCustomizationRef}>
+                  <summary className="flex min-h-10 cursor-pointer list-none items-center justify-between gap-3 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">
+                    Tùy chỉnh
+                    <span className="flex items-center gap-1.5">
+                      <span className="h-4 w-4 rounded-full border border-white/20" style={{ backgroundColor }} />
+                      <span className="h-4 w-4 rounded-full border border-white/20" style={{ backgroundColor: textColor }} />
+                    </span>
+                  </summary>
+                  <div className="mt-3 grid gap-3 border-t border-white/10 pt-3">
+                    <div className="grid gap-2">
+                      <div className="flex items-center justify-between gap-3">
+                        <label className="text-[11px] font-bold text-slate-400">Cỡ chữ</label>
+                        <span className="font-mono text-xs text-cyan-200">{fontSize}px</span>
+                      </div>
+                      <input className="p-0 accent-cyan-300" max="72" min="12" type="range" value={fontSize} onChange={(event) => setFontSize(Number(event.target.value))} />
+                    </div>
+                    <div className="grid gap-2">
+                      <label className="text-[11px] font-bold text-slate-400">Kiểu chữ</label>
+                      <select className="rounded-lg border-white/10 bg-[#050810] text-xs text-slate-100" value={fontFamily} onChange={(event) => setFontFamily(event.target.value)}>
+                        {subtitleFonts.map(([value, label]) => (
+                          <option key={value} value={value}>
+                            {label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="grid gap-2">
+                      <div className="flex items-center justify-between gap-3">
+                        <label className="text-[11px] font-bold text-slate-400">Màu nền</label>
+                        <input className="h-8 w-12 cursor-pointer rounded border-white/10 bg-transparent p-0.5" type="color" value={backgroundColor} onChange={(event) => setBackgroundColor(event.target.value)} />
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {subtitleColorPresets.map((color) => (
+                          <button aria-label={`Chọn màu nền ${color}`} className="h-6 w-6 rounded-full border border-white/20 transition hover:scale-110" key={`background-${color}`} onClick={() => setBackgroundColor(color)} style={{ backgroundColor: color }} type="button" />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="grid gap-2">
+                      <div className="flex items-center justify-between gap-3">
+                        <label className="text-[11px] font-bold text-slate-400">Màu chữ</label>
+                        <input className="h-8 w-12 cursor-pointer rounded border-white/10 bg-transparent p-0.5" type="color" value={textColor} onChange={(event) => setTextColor(event.target.value)} />
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {subtitleColorPresets.map((color) => (
+                          <button aria-label={`Chọn màu chữ ${color}`} className="h-6 w-6 rounded-full border border-white/20 transition hover:scale-110" key={`text-${color}`} onClick={() => setTextColor(color)} style={{ backgroundColor: color }} type="button" />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </details>
               </div>
             )}
 
-            <button className="flex min-h-10 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-cyan-300 to-blue-500 px-4 py-2.5 text-xs font-black text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:brightness-110" type="submit">
-              <Icon name="play" className="h-4 w-4" />
-              Bắt đầu xử lý
+            <button className="studio-process-button group relative flex min-h-12 items-center justify-center gap-2.5 overflow-hidden rounded-lg px-4 py-3 text-sm font-black tracking-wide text-cyan-950 transition duration-300 hover:-translate-y-0.5 focus:-translate-y-0.5 focus:outline-none" type="submit">
+              <span className="studio-process-shine" aria-hidden="true" />
+              <Icon name="play" className="relative z-10 h-4.5 w-4.5 transition duration-300 group-hover:scale-110" />
+              <span className="relative z-10">Bắt đầu xử lý</span>
             </button>
           </form>
 
-          <div className="grid min-h-[150px] flex-1 gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-3">
+          <div className="grid min-h-37.5 flex-1 gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-3">
             <div className="flex items-center justify-between">
               <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400">Hàng đợi</p>
               <span className="rounded-full border border-white/10 px-2.5 py-1 text-[11px] text-slate-400">{queueItems.length} job</span>
@@ -766,12 +1044,12 @@ export default function SubtitleWorkspace() {
           </div>
         </aside>
 
-        <section className="custom-scrollbar min-h-0 overflow-y-auto rounded-lg bg-[#0a101b]/55 p-3 lg:overflow-hidden">
+        <section className="custom-scrollbar min-h-0 overflow-y-auto rounded-lg bg-[#0a101b]/55 p-3">
           <div className="flex h-full min-h-0 flex-col gap-3">
             <div className="flex flex-col gap-3 rounded-lg border border-white/10 bg-[#0f172a]/88 p-3 shadow-2xl shadow-black/25 backdrop-blur-xl xl:flex-row xl:items-start xl:justify-between">
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className={`h-2.5 w-2.5 rounded-full ${loading ? "animate-pulse bg-cyan-300 shadow-lg shadow-cyan-300/50" : "bg-emerald-300"}`} />
+                  <span className={`studio-status-dot h-2.5 w-2.5 rounded-full ${loading ? "bg-cyan-300 shadow-cyan-300/60" : "bg-emerald-300 shadow-emerald-300/60"}`} />
                   <span className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-200">{currentStatus}</span>
                   <span className="rounded-full border border-white/10 px-2.5 py-1 text-[11px] font-bold text-slate-400">{currentMediaType === "audio" ? "Audio to SRT" : "Video to SRT/MP4"}</span>
                 </div>
@@ -804,7 +1082,7 @@ export default function SubtitleWorkspace() {
                   Xuất SRT
                 </button>
                 {currentMediaType === "video" && (
-                  <button disabled={!subtitles.length || loading} onClick={burnVideo} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-cyan-300 to-blue-500 px-3 py-2 text-xs font-black text-slate-950 shadow-lg shadow-cyan-500/20 hover:brightness-110 disabled:hidden" type="button">
+                  <button disabled={!subtitles.length || loading} onClick={burnVideo} className="flex items-center gap-2 rounded-lg bg-linear-to-r from-cyan-300 to-blue-500 px-3 py-2 text-xs font-black text-slate-950 shadow-lg shadow-cyan-500/20 hover:brightness-110 disabled:hidden" type="button">
                     <Icon name="video" className="h-4 w-4" />
                     Ép video
                   </button>
@@ -845,7 +1123,7 @@ export default function SubtitleWorkspace() {
                     <span className="rounded-full border border-white/10 px-3 py-1 text-[11px] font-bold text-slate-400">{currentOutput}</span>
                   </div>
 
-                  <div className="relative aspect-video overflow-hidden bg-black">
+                  <div className={`subtitle-preview-frame relative aspect-video overflow-hidden bg-black ${previewExpanded ? "subtitle-preview-expanded" : ""}`} ref={previewFrameRef}>
                     {currentMediaType === "audio" ? (
                       <div className="grid h-full content-center p-5 text-left">
                         <div className="grid justify-items-start gap-4">
@@ -865,7 +1143,44 @@ export default function SubtitleWorkspace() {
                         </div>
                       </div>
                     ) : previewUrl ? (
-                      <video controls src={previewUrl} className="h-full w-full object-contain" />
+                      <>
+                        <video
+                          controls
+                          controlsList="nofullscreen"
+                          src={previewUrl}
+                          className="h-full w-full object-contain"
+                          onTimeUpdate={(event) => setPreviewCurrentTime(event.currentTarget.currentTime)}
+                        />
+                        <button
+                          aria-label={previewExpanded ? "Thu nhỏ video" : "Phóng to video và phụ đề"}
+                          className="absolute right-3 top-3 z-30 grid h-9 w-9 place-items-center rounded-lg border border-cyan-300/25 bg-[#050810]/75 text-cyan-100 shadow-lg shadow-black/30 backdrop-blur-sm transition hover:border-cyan-200/60 hover:bg-cyan-300/15 hover:text-white"
+                          onClick={openPreviewFullscreen}
+                          title={previewExpanded ? "Thu nhỏ video" : "Phóng to video và phụ đề"}
+                          type="button"
+                        >
+                          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3m13-5h3a2 2 0 0 1 2 2v3m0 8v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                          </svg>
+                        </button>
+                        {!finalVideoUrl && previewSubtitle && (
+                          <div
+                            className="pointer-events-none absolute inset-x-0 z-10 flex justify-center px-5 text-center"
+                            style={{ bottom: `${posY}px` }}
+                          >
+                            <span
+                              className="max-w-[92%] rounded px-2.5 py-1 text-sm font-semibold leading-5 shadow-md"
+                              style={{
+                                backgroundColor: hexToRgba(backgroundColor, opacity),
+                                color: textColor,
+                                fontFamily,
+                                fontSize: `${fontSize}px`,
+                              }}
+                            >
+                              {previewSubtitle.text}
+                            </span>
+                          </div>
+                        )}
+                      </>
                     ) : (
                       <div className="grid h-full content-center p-6 text-left">
                         <div className="grid max-w-md justify-items-start gap-4 text-slate-500">
@@ -905,7 +1220,7 @@ export default function SubtitleWorkspace() {
                 </div>
               </div>
 
-              <div className="flex min-h-[390px] flex-col overflow-hidden rounded-lg border border-white/10 bg-[#0f172a]/92 shadow-2xl shadow-black/35 backdrop-blur-xl lg:min-h-0">
+              <div className="flex min-h-97.5 flex-col overflow-hidden rounded-lg border border-white/10 bg-[#0f172a]/92 shadow-2xl shadow-black/35 backdrop-blur-xl lg:min-h-0">
                 {activePanel === "history" ? (
                   <HistoryList history={history} message={historyMessage} onRefresh={loadHistory} />
                 ) : (
@@ -930,12 +1245,12 @@ export default function SubtitleWorkspace() {
                             <h3 className="font-black text-white">Dự án hoàn tất</h3>
                             <p className="mt-1 text-sm text-slate-400">Video đã được ép phụ đề cứng thành công.</p>
                           </div>
-                          <a className="w-full rounded-lg bg-gradient-to-r from-cyan-300 to-blue-500 py-3 text-center text-sm font-black text-slate-950 hover:brightness-110" download href={finalVideoUrl} target="_blank">
+                          <a className="w-full rounded-lg bg-linear-to-r from-cyan-300 to-blue-500 py-3 text-center text-sm font-black text-slate-950 hover:brightness-110" download href={finalVideoUrl} target="_blank">
                             Tải video MP4
                           </a>
                         </div>
                       ) : subtitles.length === 0 ? (
-                        <div className="grid h-full min-h-[300px] place-items-center rounded-lg border border-dashed border-white/10 bg-[#050810]/45 p-6 text-center text-slate-500">
+                        <div className="grid h-full min-h-75 place-items-center rounded-lg border border-dashed border-white/10 bg-[#050810]/45 p-6 text-center text-slate-500">
                           <div className="grid max-w-xs justify-items-center gap-3">
                             <span className="grid h-14 w-14 place-items-center rounded-lg border border-white/10 bg-white/[0.035]">
                               <Icon name="subtitle" className="h-7 w-7" />
@@ -953,14 +1268,14 @@ export default function SubtitleWorkspace() {
                             </a>
                           )}
                           {subtitles.map((sub, index) => (
-                            <div className="rounded-lg border border-white/10 bg-white/[0.035] p-2.5 transition hover:border-cyan-300/25 hover:bg-white/[0.055]" key={`${sub.start}-${index}`}>
+                            <div className="rounded-lg border border-white/10 bg-white/[0.035] p-2.5 transition hover:border-cyan-300/25 hover:bg-white/5.5" key={`${sub.start}-${index}`}>
                               <div className="mb-2.5 flex items-center justify-between gap-3">
                                 <span className="rounded-md border border-white/10 bg-[#050810] px-2 py-1 font-mono text-[11px] text-cyan-200">
                                   {sub.start} - {sub.end}
                                 </span>
                                 <span className="rounded-full border border-white/10 px-2.5 py-1 text-[11px] font-bold uppercase text-slate-500">#{index + 1}</span>
                               </div>
-                              <textarea className="custom-scrollbar min-h-[72px] w-full resize-y rounded-lg border-white/10 bg-[#050810]/78 p-3 text-xs leading-5 text-slate-100 focus:border-cyan-300/60" value={sub.text} onChange={(event) => updateSubtitle(index, event.target.value)} />
+                              <textarea className="custom-scrollbar min-h-18 w-full resize-y rounded-lg border-white/10 bg-[#050810]/78 p-3 text-xs leading-5 text-slate-100 focus:border-cyan-300/60" value={sub.text} onChange={(event) => updateSubtitle(index, event.target.value)} />
                             </div>
                           ))}
                         </>
@@ -975,7 +1290,7 @@ export default function SubtitleWorkspace() {
       </main>
 
       {archiveOpen && (
-        <div className="fixed inset-0 z-[9999] grid place-items-center bg-[#050810]/85 p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 z-9999 grid place-items-center bg-[#050810]/85 p-4 backdrop-blur-sm">
           <div className="relative w-full max-w-2xl overflow-hidden rounded-lg border border-cyan-400/15 bg-[#0b1437] shadow-2xl">
             <div className="flex items-start justify-between gap-4 border-b border-white/10 p-6">
               <div>
@@ -1004,11 +1319,11 @@ export default function SubtitleWorkspace() {
                         SRT
                       </a>
                       {job.media_type === "audio" ? (
-                        <a className="rounded-lg bg-gradient-to-r from-cyan-300 to-blue-500 px-3 py-2 text-xs font-black text-slate-950 hover:brightness-110" href={makeBackendUrl(`/api/original/${job.job_id}`)} target="_blank">
+                        <a className="rounded-lg bg-linear-to-r from-cyan-300 to-blue-500 px-3 py-2 text-xs font-black text-slate-950 hover:brightness-110" href={makeBackendUrl(`/api/original/${job.job_id}`)} target="_blank">
                           Tệp gốc
                         </a>
                       ) : (
-                        <a className="rounded-lg bg-gradient-to-r from-cyan-300 to-blue-500 px-3 py-2 text-xs font-black text-slate-950 hover:brightness-110" href={makeBackendUrl(`/api/download/${job.job_id}`)} target="_blank">
+                        <a className="rounded-lg bg-linear-to-r from-cyan-300 to-blue-500 px-3 py-2 text-xs font-black text-slate-950 hover:brightness-110" href={makeBackendUrl(`/api/download/${job.job_id}`)} target="_blank">
                           MP4
                         </a>
                       )}
