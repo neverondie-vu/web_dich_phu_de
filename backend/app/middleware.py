@@ -1,10 +1,11 @@
 from fastapi import HTTPException, Request
 
-from app.config import system_settings
+from app.config import reload_system_settings, system_settings
 from app.security import get_request_ip, json_response_with_cors, verify_admin_request
 
 
 async def enforce_access_policy(request: Request, call_next):
+    reload_system_settings()
     client_ip = get_request_ip(request)
     if client_ip in system_settings.get("blacklisted_ips", []):
         return json_response_with_cors(

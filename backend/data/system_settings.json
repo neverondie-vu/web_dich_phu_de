@@ -1,5 +1,8 @@
 {
   "maintenance_mode": false,
   "blacklisted_ips": [],
-  "whisper_model": "small"
+  "whisper_model": "small",
+  "translation_provider": "nllb",
+  "max_storage_gb": 100,
+  "retention_days": 20
 }

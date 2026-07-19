@@ -9,19 +9,6 @@ const nextConfig = {
   turbopack: {
     root: __dirname
   },
-  async headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: [
-          {
-            key: "Cross-Origin-Opener-Policy",
-            value: "same-origin-allow-popups"
-          }
-        ]
-      }
-    ];
-  },
   async redirects() {
     return [
       { source: "/index.html", destination: "/", permanent: false },

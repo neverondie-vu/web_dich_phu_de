@@ -1,0 +1,2 @@
+# Install this alongside the legacy UTF-16 requirements.txt file.
+yt-dlp[default,curl-cffi]==2026.6.9

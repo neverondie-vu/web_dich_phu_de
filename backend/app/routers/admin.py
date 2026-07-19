@@ -6,7 +6,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app import models
-from app.config import save_system_settings, system_settings
+from app.config import reload_system_settings, save_system_settings, system_settings
 from app.database import get_db
 from app.schemas import ConfigSchema, IPCheck, MaintenanceRequest
 from app.security import get_request_ip, normalize_ip
@@ -57,8 +57,29 @@ async def update_config(config: ConfigSchema):
     allowed_models = {"tiny", "base", "small", "medium", "large", "large-v3"}
     if config.whisper_model not in allowed_models:
         return JSONResponse(status_code=400, content={"message": "Whisper model không hợp lệ", "status": "error"})
+    allowed_translation_providers = {"nllb", "google", "gpt"}
+    if config.translation_provider not in allowed_translation_providers:
+        return JSONResponse(status_code=400, content={"message": "Bo dich phu de khong hop le", "status": "error"})
     system_settings["whisper_model"] = config.whisper_model
+    system_settings["translation_provider"] = config.translation_provider
+    system_settings["max_storage_gb"] = config.max_storage_gb
+    system_settings["retention_days"] = config.retention_days
     save_system_settings()
+    safe_print(
+        "Cau hinh he thong:",
+        f"whisper={config.whisper_model}",
+        f"translator={config.translation_provider}",
+        f"storage={config.max_storage_gb}GB",
+        f"retention={config.retention_days}d",
+    )
+    return {
+        "message": "Cap nhat cau hinh thanh cong!",
+        "status": "success",
+        "whisper_model": config.whisper_model,
+        "translation_provider": config.translation_provider,
+        "max_storage_gb": config.max_storage_gb,
+        "retention_days": config.retention_days,
+    }
     safe_print(f"Model Whisper được chọn: {config.whisper_model}")
     return {"message": "Cập nhật cấu hình thành công!", "status": "success", "whisper_model": config.whisper_model}
 
@@ -72,7 +93,7 @@ async def toggle_maintenance(request: MaintenanceRequest):
 
 @router.get("/system-status")
 async def get_system_status():
-    return system_settings
+    return reload_system_settings()
 
 
 @router.get("/blacklist")

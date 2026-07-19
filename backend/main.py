@@ -8,7 +8,7 @@ from app import models
 from app.config import CORS_ALLOWED_ORIGINS, ensure_runtime_directories
 from app.database import engine
 from app.middleware import enforce_access_policy
-from app.routers import admin, archive, processing
+from app.routers import admin, archive, automation, creative, processing
 from app.tasks import cleanup_expired_jobs
 
 
@@ -36,6 +36,8 @@ models.Base.metadata.create_all(bind=engine)
 ensure_runtime_directories()
 
 app.include_router(processing.router)
+app.include_router(automation.router)
+app.include_router(creative.router)
 app.include_router(archive.router)
 app.include_router(admin.router)
 

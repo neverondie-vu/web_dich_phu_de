@@ -28,7 +28,7 @@ def refine_subtitle_with_gemini(raw_srt: str) -> str:
         {raw_srt}
         """
         
-        # Gọi model thế hệ mới nhất
+        
         response = client.models.generate_content(
             model='gemini-2.5-flash',
             contents=prompt

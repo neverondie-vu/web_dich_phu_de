@@ -8,10 +8,41 @@ from fastapi import HTTPException, UploadFile
 from sqlalchemy.orm import Session
 
 from app import models
+from app.config import system_settings
 
 
 ALLOWED_AUDIO_EXTENSIONS = {"mp3", "wav", "m4a"}
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
+def get_uploads_size_bytes() -> int:
+    total = 0
+    uploads_root = os.path.abspath(os.path.join(BASE_DIR, "uploads"))
+    if not os.path.exists(uploads_root):
+        return 0
+    for root, _, files in os.walk(uploads_root):
+        for filename in files:
+            path = os.path.join(root, filename)
+            try:
+                total += os.path.getsize(path)
+            except OSError:
+                pass
+    return total
+
+
+def enforce_storage_limit(file_path: str) -> None:
+    max_storage_gb = float(system_settings.get("max_storage_gb", 100) or 100)
+    max_bytes = int(max_storage_gb * 1024 * 1024 * 1024)
+    if get_uploads_size_bytes() <= max_bytes:
+        return
+    try:
+        os.remove(file_path)
+    except OSError:
+        pass
+    raise HTTPException(
+        status_code=507,
+        detail=f"Dung luong luu tru da vuot gioi han {max_storage_gb:g}GB. Vui long don dep hoac tang gioi han.",
+    )
 
 
 def get_upload_extension(filename: str, allowed_extensions: set[str]) -> str:
@@ -32,6 +63,8 @@ def save_upload_file(file: UploadFile, upload_dir: str, job_id: str, allowed_ext
 
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
+
+    enforce_storage_limit(file_path)
 
     return safe_filename, file_path
 
@@ -232,6 +265,7 @@ def delete_job_assets(job) -> int:
     candidate_paths = {
         job.original_video_path,
         job.hardsub_video_path,
+        job.hardsub_video_path.rsplit(".", 1)[0] + "_dubbed.mp4" if job.hardsub_video_path else None,
         job.srt_path,
         f"uploads/subtitle/{job.id}.json",
         f"uploads/subtitle/{job.id}.srt",

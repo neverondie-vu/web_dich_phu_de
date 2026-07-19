@@ -2,9 +2,10 @@ import asyncio
 from datetime import datetime, timedelta
 
 from app import models
-from app.ai.subtitle_pipeline import burn_subtitles_to_video, extract_subtitles_from_video
+from app.ai.subtitle_pipeline import add_voiceover_to_video, burn_subtitles_to_video, extract_subtitles_from_video
 from app.config import system_settings
 from app.database import SessionLocal
+from app.services.tts_service import synthesize_full_narration
 from app.services.media_storage import (
     delete_job_assets,
     delete_job_database_records,
@@ -28,6 +29,7 @@ def extract_subtitles_task(file_path: str, src_language: str, job_id: str, final
             file_path,
             src_language,
             whisper_model=system_settings.get("whisper_model", "small"),
+            translation_provider=system_settings.get("translation_provider", "nllb"),
         )
         json_path, srt_path = write_subtitle_files(job_id, subtitles_data)
         job = db.query(models.VideoJob).filter(models.VideoJob.id == job_id).first()
@@ -57,6 +59,13 @@ def burn_video_task(
     text_color: str,
     font_size: int,
     font_family: str,
+    tts_language: str = "vi",
+    tts_voice: str = "edge:vi-VN-HoaiMyNeural",
+    tts_speed: float = 1.0,
+    tts_pitch: float = 0.0,
+    tts_volume: float = 1.0,
+    reduce_original_voice: bool = True,
+    subtitle_position_percent: float | None = None,
 ):
     db = SessionLocal()
     try:
@@ -73,7 +82,24 @@ def burn_video_task(
                 text_color,
                 font_size,
                 font_family,
+                subtitle_position_percent,
             )
+            try:
+                log_processing_history(db, job_id, job.user_id, "create_dubbed_video", "processing")
+                db.commit()
+                voiceover_path = synthesize_full_narration(
+                    subtitles,
+                    f"{job_id}_dub",
+                    tts_language,
+                    tts_voice,
+                    tts_speed,
+                    tts_pitch,
+                    tts_volume,
+                )
+                add_voiceover_to_video(job.hardsub_video_path, voiceover_path, reduce_original_voice=reduce_original_voice)
+                log_processing_history(db, job_id, job.user_id, "create_dubbed_video", "completed")
+            except Exception as exc:
+                log_processing_history(db, job_id, job.user_id, "create_dubbed_video", "failed", str(exc))
             job.status = "completed"
             log_processing_history(db, job_id, job.user_id, "burn_subtitles", "completed")
             db.commit()
@@ -92,7 +118,8 @@ async def cleanup_expired_jobs():
     while True:
         db = SessionLocal()
         try:
-            threshold = datetime.utcnow() - timedelta(days=20)
+            retention_days = int(system_settings.get("retention_days", 20) or 20)
+            threshold = datetime.utcnow() - timedelta(days=retention_days)
             old_jobs = db.query(models.VideoJob).filter(models.VideoJob.created_at < threshold).all()
             for job in old_jobs:
                 delete_job_assets(job)

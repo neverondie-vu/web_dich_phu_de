@@ -1,0 +1,803 @@
+/* Legacy visual language kept in native Next.js components. */
+body {
+  font-family: "Inter", sans-serif;
+  background: radial-gradient(
+    circle at 50% 30%,
+    #1a2a5e 0%,
+    #0c1433 35%,
+    #050810 65%,
+    #000000 100%
+  );
+}
+
+.font-montserrat,
+.nav-links a {
+  font-family: "Montserrat", sans-serif;
+}
+
+.crescent-moon {
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2800px;
+  height: 2800px;
+  border-radius: 50%;
+  box-shadow:
+    0 -12px 10px -5px rgba(255, 255, 255, 0.4),
+    0 -20px 40px -10px rgba(56, 189, 248, 0.2);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.meteor-shower {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.meteor {
+  position: absolute;
+  top: -50px;
+  right: 10%;
+  width: 150px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 1), transparent);
+  animation: meteor-fall 4s linear infinite;
+  opacity: 0;
+  transform: rotate(-45deg);
+}
+
+.meteor:nth-child(2) {
+  right: 30%;
+  animation-delay: 1.5s;
+  animation-duration: 5s;
+  width: 100px;
+}
+
+.meteor:nth-child(3) {
+  right: -10%;
+  animation-delay: 2.8s;
+  animation-duration: 3.5s;
+  width: 200px;
+}
+
+@keyframes meteor-fall {
+  0% {
+    transform: translate(0, 0) rotate(-45deg);
+    opacity: 1;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-100vw, 100vh) rotate(-45deg);
+    opacity: 0;
+  }
+}
+
+.sparkle-ai {
+  background: linear-gradient(135deg, #a0eaff 0%, #ffffff 50%, #a0eaff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine-ai 2.5s linear infinite;
+  text-shadow:
+    0 0 20px rgba(160, 234, 255, 0.8),
+    0 0 35px rgba(255, 255, 255, 0.6);
+}
+
+@keyframes shine-ai {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.sparkle-text {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa, #3b82f6);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 3s linear infinite;
+  text-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.nav-links a {
+  position: relative;
+  z-index: 1;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
+}
+
+.nav-orbit-light {
+  animation: nav-orbit 8s linear infinite;
+  background: #a5f3fc;
+  border-radius: 999px;
+  box-shadow:
+    0 0 5px #67e8f9,
+    0 0 12px rgba(34, 211, 238, 0.95),
+    0 0 20px rgba(59, 130, 246, 0.7);
+  height: 5px;
+  left: 0;
+  offset-path: inset(1px round 999px);
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 5px;
+}
+
+@keyframes nav-orbit {
+  to {
+    offset-distance: 100%;
+  }
+}
+
+.auth-z-frame {
+  position: relative;
+}
+
+.subtitle-preview-frame:fullscreen {
+  aspect-ratio: auto;
+  height: 100vh;
+  width: 100vw;
+}
+
+.subtitle-preview-frame:-webkit-full-screen {
+  aspect-ratio: auto;
+  height: 100vh;
+  width: 100vw;
+}
+
+.subtitle-preview-expanded {
+  aspect-ratio: auto;
+  height: 100vh;
+  inset: 0;
+  position: fixed;
+  width: 100vw;
+  z-index: 10000;
+}
+
+.subtitle-customization {
+  transition: width 0.2s ease;
+  width: 100%;
+}
+
+.subtitle-customization[open] {
+  width: 100%;
+}
+
+.studio-status-dot {
+  animation: studio-status-blink 1.7s ease-in-out infinite;
+  box-shadow: 0 0 8px currentColor;
+}
+
+@keyframes studio-status-blink {
+  0%,
+  100% {
+    opacity: 0.48;
+    transform: scale(0.82);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+.studio-process-button {
+  background: linear-gradient(135deg, #a5f3fc 0%, #67e8f9 46%, #38bdf8 100%);
+  border: 1px solid rgba(207, 250, 254, 0.86);
+  box-shadow:
+    0 7px 20px rgba(34, 211, 238, 0.2),
+    0 0 18px rgba(103, 232, 249, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.64);
+}
+
+.studio-process-button:hover,
+.studio-process-button:focus-visible {
+  box-shadow:
+    0 10px 25px rgba(34, 211, 238, 0.3),
+    0 0 24px rgba(103, 232, 249, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.studio-process-shine {
+  animation: studio-process-shine 3.8s ease-in-out infinite;
+  background: linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.58) 50%, transparent 80%);
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(-135%);
+}
+
+@keyframes studio-process-shine {
+  0%,
+  58% {
+    transform: translateX(-135%);
+  }
+
+  82%,
+  100% {
+    transform: translateX(135%);
+  }
+}
+
+.auth-z-frame a {
+  position: relative;
+  z-index: 1;
+}
+
+.auth-z-stroke {
+  height: 48px;
+  left: -8px;
+  overflow: visible;
+  pointer-events: none;
+  position: absolute;
+  top: -7px;
+  width: 208px;
+}
+
+.auth-z-line,
+.auth-z-light {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.auth-z-line {
+  filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.72));
+  opacity: 0.88;
+  stroke: #67e8f9;
+  stroke-width: 1.4;
+}
+
+.auth-z-light {
+  animation: auth-z-light-run 3.6s linear infinite;
+  filter: drop-shadow(0 0 7px rgba(165, 243, 252, 0.98));
+  stroke: #ecfeff;
+  stroke-dasharray: 10 250;
+  stroke-width: 2;
+}
+
+@keyframes auth-z-light-run {
+  to {
+    stroke-dashoffset: -260;
+  }
+}
+
+.nav-links a:hover {
+  transform: translateY(-3px);
+  color: #fff;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: #38bdf8;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+  transform-origin: right;
+}
+
+.nav-links a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.btn-hightech {
+  background: linear-gradient(
+    135deg,
+    rgba(14, 30, 64, 0.8),
+    rgba(6, 15, 30, 0.9)
+  );
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  box-shadow:
+    0 0 20px rgba(56, 189, 248, 0.3),
+    inset 0 0 15px rgba(56, 189, 248, 0.1);
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.btn-hightech:hover {
+  box-shadow:
+    0 0 35px rgba(56, 189, 248, 0.6),
+    inset 0 0 25px rgba(56, 189, 248, 0.3);
+  border-color: #38bdf8;
+  transform: translateY(-2px);
+}
+
+.btn-hightech::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transform: skewX(-25deg);
+  animation: scan-light 3s infinite;
+}
+
+@keyframes scan-light {
+  0% {
+    left: -100%;
+  }
+  50%,
+  100% {
+    left: 200%;
+  }
+}
+
+.spacecraft-container {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.spacecraft {
+  position: absolute;
+  animation: spacecraft-float 10s ease-in-out infinite alternate;
+}
+
+@keyframes spacecraft-float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(1deg);
+  }
+  100% {
+    transform: translateY(10px) rotate(-1deg);
+  }
+}
+
+.large-ship-left {
+  width: 250px;
+  height: 150px;
+  top: 35%;
+  left: 10%;
+  animation:
+    spacecraft-float 12s ease-in-out infinite alternate,
+    ship-drift-left 25s linear infinite;
+}
+
+@keyframes ship-drift-left {
+  0% {
+    left: 10%;
+  }
+  100% {
+    left: -30%;
+  }
+}
+
+.large-ship-left .module {
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, #15234b 0%, #050810 100%);
+  box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.05);
+}
+
+.large-ship-left .main-hull {
+  width: 160px;
+  height: 50px;
+  top: 50px;
+  left: 45px;
+  border-radius: 5px;
+}
+
+.large-ship-left .habitat-section {
+  width: 70px;
+  height: 70px;
+  top: 40px;
+  left: 90px;
+  border-radius: 5px;
+}
+
+.large-ship-left .engine-pod {
+  width: 40px;
+  height: 100px;
+  top: 25px;
+  border-radius: 5px;
+}
+
+.large-ship-left .engine-pod-left {
+  left: 35px;
+}
+
+.large-ship-left .engine-pod-right {
+  left: 175px;
+}
+
+.large-ship-left .thruster-glow {
+  box-shadow:
+    0 0 30px #ffd700,
+    0 0 60px rgba(255, 215, 0, 0.6);
+}
+
+.large-ship-left .panel {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.large-ship-left .plating {
+  border-radius: 2px;
+}
+
+.large-ship-left .plating-1 {
+  width: 30px;
+  height: 10px;
+  top: 15px;
+  left: 20px;
+}
+
+.large-ship-left .plating-2 {
+  width: 40px;
+  height: 15px;
+  top: 20px;
+  left: 100px;
+}
+
+.large-ship-left .window {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: rgba(56, 189, 248, 0.4);
+  border-radius: 1px;
+}
+
+.large-ship-left .window-1 {
+  width: 5px;
+  height: 5px;
+  top: 12px;
+  left: 10px;
+}
+
+.large-ship-left .window-2 {
+  width: 8px;
+  height: 8px;
+  top: 15px;
+  left: 70px;
+}
+
+.large-ship-left .grid-mesh {
+  border: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 5px 5px;
+}
+
+.large-ship-left .grid-left {
+  width: 40px;
+  height: 20px;
+  top: 70px;
+  left: -10px;
+  transform: rotate(-15deg);
+}
+
+.large-ship-left .grid-right {
+  width: 50px;
+  height: 25px;
+  top: 80px;
+  left: 220px;
+  transform: rotate(15deg);
+}
+
+.small-ship-right {
+  width: 120px;
+  height: 80px;
+  top: 55%;
+  right: 15%;
+  animation:
+    spacecraft-float 8s ease-in-out infinite alternate,
+    ship-drift-right 20s linear infinite;
+}
+
+@keyframes ship-drift-right {
+  0% {
+    right: 15%;
+    transform: scale(1);
+  }
+  100% {
+    right: -20%;
+    transform: scale(0.6);
+  }
+}
+
+.small-ship-right .hull,
+.small-ship-right .wing {
+  position: absolute;
+  background: linear-gradient(135deg, #0c1433 0%, #000000 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.small-ship-right .main-body {
+  width: 80px;
+  height: 20px;
+  top: 30px;
+  left: 20px;
+  border-radius: 2px;
+}
+
+.small-ship-right .wing {
+  width: 40px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.small-ship-right .wing-top {
+  top: 20px;
+  left: 10px;
+  transform: rotate(-25deg);
+}
+
+.small-ship-right .wing-bottom {
+  top: 40px;
+  left: 10px;
+  transform: rotate(25deg);
+}
+
+.small-ship-right .tail-fin {
+  width: 20px;
+  height: 30px;
+  top: 10px;
+  left: 90px;
+  border-radius: 2px;
+}
+
+.small-ship-right .wing-detail-top {
+  width: 20px;
+  height: 5px;
+  top: 15px;
+  left: 30px;
+  transform: rotate(-20deg);
+}
+
+.small-ship-right .wing-detail-bottom {
+  width: 20px;
+  height: 5px;
+  top: 45px;
+  left: 30px;
+  transform: rotate(20deg);
+}
+
+.small-ship-right .cockpit {
+  width: 15px;
+  height: 10px;
+  top: 35px;
+  left: 5px;
+  border-radius: 2px;
+  background: rgba(56, 189, 248, 0.2);
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.small-ship-right .thruster-glow-blue {
+  box-shadow:
+    0 0 20px #38bdf8,
+    0 0 40px rgba(56, 189, 248, 0.6);
+}
+
+.small-ship-right .detail {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 1px;
+}
+
+.small-ship-right .plating-1 {
+  width: 10px;
+  height: 3px;
+  top: 12px;
+  left: 15px;
+}
+
+.small-ship-right .plating-2 {
+  width: 15px;
+  height: 4px;
+  top: 50px;
+  left: 60px;
+}
+
+.solar-system {
+  position: relative;
+  width: 1400px;
+  height: 400px;
+  margin: 140px auto 0;
+  z-index: 0;
+  transform: scale(0.85);
+  transform-origin: top center;
+}
+
+.sun {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, #fff 0%, #ffd700 30%, #ff8c00 100%);
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 0 100px #ffd700,
+    0 0 200px rgba(255, 215, 0, 0.6),
+    0 0 400px rgba(255, 140, 0, 0.3);
+  z-index: 10;
+}
+
+.orbit {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.orbit-mercury {
+  width: 450px;
+  height: 450px;
+  animation-name: rotate;
+  animation-duration: 15s;
+}
+
+.orbit-mars {
+  width: 750px;
+  height: 750px;
+  animation-name: rotate;
+  animation-duration: 25s;
+}
+
+.orbit-jupiter {
+  width: 1150px;
+  height: 1150px;
+  animation-name: rotate;
+  animation-duration: 45s;
+}
+
+.orbit-saturn {
+  width: 1550px;
+  height: 1550px;
+  animation-name: rotate;
+  animation-duration: 70s;
+}
+
+@keyframes rotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.planet-wrap {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.planet {
+  border-radius: 50%;
+  position: relative;
+  animation: planet-sparkle 2s ease-in-out infinite alternate;
+}
+
+.mercury {
+  width: 16px;
+  height: 16px;
+  background-color: #a8a8a8;
+  top: -8px;
+  animation-delay: 0s;
+}
+
+.mars {
+  width: 24px;
+  height: 24px;
+  background-color: #f44336;
+  top: -12px;
+  animation-delay: 0.5s;
+}
+
+.jupiter {
+  width: 50px;
+  height: 50px;
+  background-color: #ffb300;
+  top: -25px;
+  animation-delay: 1s;
+}
+
+.saturn {
+  width: 44px;
+  height: 44px;
+  background-color: #ffe082;
+  top: -22px;
+  animation-delay: 1.5s;
+}
+
+.planet-wrap.saturn-wrap::before {
+  content: "";
+  width: 88px;
+  height: 16px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 224, 130, 0.5);
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translate(-50%, 50%) rotateX(70deg);
+}
+
+@keyframes planet-sparkle {
+  from {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+  }
+  to {
+    box-shadow:
+      0 0 25px rgba(255, 255, 255, 0.9),
+      0 0 40px rgba(255, 255, 255, 0.4);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(34, 211, 238, 0.3);
+  border-radius: 20px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 211, 238, 0.4);
+}
+
+.glow-btn {
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.2);
+  transition: all 0.3s ease;
+}
+
+.glow-btn:hover {
+  box-shadow: 0 0 35px rgba(34, 211, 238, 0.5);
+  transform: translateY(-2px);
+}
+
+.sidebar-contrast {
+  background: linear-gradient(145deg, #0f172a 0%, #020617 100%);
+  border-right: 1px solid rgba(34, 211, 238, 0.2);
+  box-shadow: 20px 0 50px rgba(0, 0, 0, 0.5);
+}

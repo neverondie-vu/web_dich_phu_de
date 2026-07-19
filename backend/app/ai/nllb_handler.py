@@ -5,14 +5,34 @@ import torch
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
 model_name = os.getenv("NLLB_MODEL", "facebook/nllb-200-distilled-600M")
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = model.to(device=device, dtype=torch.float16 if device.type == "cuda" else None)
-model.eval()
+tokenizer = None
+model = None
+device = None
+model_lock = Lock()
 translation_lock = Lock()
 
-print(f"NLLB loaded on {device}.")
+
+def get_nllb_model():
+    """Load NLLB only when a translation job actually needs it."""
+    global device, model, tokenizer
+
+    if model is not None and tokenizer is not None:
+        return tokenizer, model, device
+
+    with model_lock:
+        if model is None or tokenizer is None:
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            tokenizer = AutoTokenizer.from_pretrained(model_name)
+            loaded_model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+            loaded_model = loaded_model.to(
+                device=device,
+                dtype=torch.float16 if device.type == "cuda" else None,
+            )
+            loaded_model.eval()
+            model = loaded_model
+            print(f"NLLB loaded on {device}.")
+
+    return tokenizer, model, device
 
 
 def translate_batch_to_vietnamese(texts: list[str], src_lang: str) -> list[str]:
@@ -21,17 +41,18 @@ def translate_batch_to_vietnamese(texts: list[str], src_lang: str) -> list[str]:
         return []
 
     with translation_lock, torch.inference_mode():
-        tokenizer.src_lang = src_lang
-        inputs = tokenizer(
+        active_tokenizer, active_model, active_device = get_nllb_model()
+        active_tokenizer.src_lang = src_lang
+        inputs = active_tokenizer(
             texts,
             return_tensors="pt",
             padding=True,
             max_length=512,
             truncation=True,
-        ).to(device)
-        target_lang_id = tokenizer.convert_tokens_to_ids("vie_Latn")
-        translated = model.generate(**inputs, forced_bos_token_id=target_lang_id)
-        return tokenizer.batch_decode(translated, skip_special_tokens=True)
+        ).to(active_device)
+        target_lang_id = active_tokenizer.convert_tokens_to_ids("vie_Latn")
+        translated = active_model.generate(**inputs, forced_bos_token_id=target_lang_id)
+        return active_tokenizer.batch_decode(translated, skip_special_tokens=True)
 
 
 def translate_to_vietnamese(text: str, src_lang: str) -> str:
